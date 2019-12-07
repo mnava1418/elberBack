@@ -31,7 +31,12 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
-  res.locals.message = err.message;
+
+  if(err.status == 404 )
+    res.locals.message = 'Oops! Esta página no existe.'
+  else
+    res.locals.message = 'Mi papá ya la cagó pero esta trabajando en ello.';
+  
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
