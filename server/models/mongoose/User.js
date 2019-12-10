@@ -24,19 +24,8 @@ UserSchema.pre('save', (next) => {
     return next();
 })
 
-
-/**const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-
-const SALT_WORK_FACTOR = 10;
-
-UserSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
-  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-    if (err) return cb(err);
-    return cb(null, isMatch);
-  });
-};
-
+UserSchema.methods.comparePassword = (password, hashPassword) => {
+  return bcrypt.compareSync(password, hashPassword);
+}
 
 module.exports = mongoose.model('User', UserSchema);
- */
