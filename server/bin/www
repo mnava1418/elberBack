@@ -28,11 +28,6 @@ mongoose.connect(config.mongoDB[env].dbURL, { useNewUrlParser: true, useUnifiedT
   }
 })
 
-/*mongoose.connect(config.mongoDB.dbURL, { useNewUrlParser: true }, (err) => {
-  log.info(`Connected to Mongo DB ${err}`);
-});*/
-
-
 /**
  * Create HTTP server.
  */
