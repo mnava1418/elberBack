@@ -5,8 +5,6 @@ const UserSchema = mongoose.Schema({
     email: { type: String, required: true, index: { unique: true }, lowercase: true, trim: true },
     name: { type: String, required: true, trim: true },
     password: { type: String, required: true, trim: true },
-    gender: { type: String, required: true, trim: true },
-    phone: { type: String, required: true, trim: true },
     img: { type: String, required: false, trim: true },
 }, { timestamps: true });
 

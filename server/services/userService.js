@@ -28,12 +28,7 @@ const register = async(req, res) => {
 
     if(!validator.isEmail(newUser.email)) {
         res.status(500);
-        return res.json({errMessage: 'Email inválido!'});
-    }
-
-    if(!validator.equals(newUser.gender, 'Male') && !validator.equals(newUser.gender, 'Female')) {
-        res.status(500);
-        return res.json({errMessage: 'Genero inválido!'});
+        return res.json({errMessage: 'El email no es válido'});
     }
 
     const hashPassword = bcrypt.hashSync(req.body.password, 10);
