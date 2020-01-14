@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
 const UserModel = require('../models/mongoose/User')
+const mailService = require('./mailService')
+const config = require('../config/index')
 
 const login = (req, res) => {
     res.send('Login Service');
@@ -40,6 +42,12 @@ const register = async(req, res) => {
             return res.json({errMessage: err.message});
         } else {
             user.password = undefined;
+            const mail = mailService()
+           
+            let message = config.mail.messages.welcome.saludo + user.name
+            message += config.mail.messages.welcome.mensaje
+            
+            mail.sendMail(user.email, 'Bienvenido a Elber!', message)
             return res.json(user);
         }
     })
