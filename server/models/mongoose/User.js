@@ -6,6 +6,8 @@ const UserSchema = mongoose.Schema({
     name: { type: String, required: true, trim: true },
     password: { type: String, required: true, trim: true },
     img: { type: String, required: false, trim: true },
+    actCode: { type: String, required: true},
+    isActive: { type: Boolean, required: true}
 }, { timestamps: true });
 
 UserSchema.methods.comparePassword = (password, hashPassword) => {

@@ -4,6 +4,7 @@ const validator = require('validator');
 const UserModel = require('../models/mongoose/User')
 const mailService = require('./mailService')
 const config = require('../config/index')
+const crypto = require('crypto')
 
 const login = (req, res) => {
     res.send('Login Service');
@@ -26,12 +27,21 @@ const register = async(req, res) => {
         return res.json({errMessage: `El email ${req.body.email} ya está registrado`});
     }
 
-    const newUser = new UserModel(req.body)
-
+    const newUser = new UserModel(req.body) 
+    newUser.isActive = false
+    
     if(!validator.isEmail(newUser.email)) {
         res.status(500);
         return res.json({errMessage: 'El email no es válido'});
     }
+
+    let actCode = crypto.randomBytes(6).toString('hex')
+
+    if(actCode.length > 8){
+        actCode = actCode.substr(0,8)
+    }
+
+    newUser.actCode = actCode
 
     const hashPassword = bcrypt.hashSync(req.body.password, 10);
     newUser.password = hashPassword;
@@ -45,7 +55,8 @@ const register = async(req, res) => {
             const mail = mailService()
            
             let message = config.mail.messages.welcome.saludo + user.name
-            message += config.mail.messages.welcome.mensaje
+            message += config.mail.messages.welcome.mensaje + user.actCode
+            message += config.mail.messages.welcome.footer
             
             mail.sendMail(user.email, 'Bienvenido a Elber!', message)
             return res.json(user);
