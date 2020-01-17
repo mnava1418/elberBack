@@ -19,6 +19,16 @@ const _getUser = async (email) => {
     return user
 }
 
+const _generateCode = () => {
+    let actCode = crypto.randomBytes(6).toString('hex')
+
+    if(actCode.length > 8){
+        actCode = actCode.substr(0,8)
+    }
+
+    return actCode
+}
+
 const register = async(req, res) => {
     if(req.body.source !== config.app.iosName){
         res.status(500);
@@ -29,50 +39,66 @@ const register = async(req, res) => {
 
     if(existingUser) {
         if(!existingUser.isActive){
-            res.status(200)
-            return res.json(existingUser);
-        }
-
-        res.status(500);
-        return res.json({errMessage: `El email ${req.body.email} ya está registrado`});
-    }
-
-    const newUser = new UserModel(req.body) 
-    newUser.isActive = false
-    
-    if(!validator.isEmail(newUser.email)) {
-        res.status(500);
-        return res.json({errMessage: 'El email no es válido'});
-    }
-
-    let actCode = crypto.randomBytes(6).toString('hex')
-
-    if(actCode.length > 8){
-        actCode = actCode.substr(0,8)
-    }
-
-    newUser.actCode = actCode
-
-    const hashPassword = bcrypt.hashSync(req.body.password, 10);
-    newUser.password = hashPassword;
-    
-    newUser.save((err, user) => {
-        if(err){
-            res.status(500);
-            return res.json({errMessage: err.message});
-        } else {
-            user.password = undefined;
-            const mail = mailService()
-           
-            let message = config.mail.messages.welcome.saludo + user.name
-            message += config.mail.messages.welcome.mensaje + user.actCode
-            message += config.mail.messages.welcome.footer
+            if(existingUser.comparePassword(req.body.password, existingUser.password)){
+                existingUser.actCode = _generateCode()
             
-            mail.sendMail(user.email, 'Bienvenido a Elber!', message)
-            res.status(200)
-            return res.json(user);
+                existingUser.save((err, user) => {
+                    if(err){
+                        res.status(500);
+                        return res.json({errMessage: err.message});
+                    } else {
+                        user.password = undefined;
+                        const mail = mailService()
+                       
+                        let message = config.mail.messages.welcome.saludo + user.name
+                        message += config.mail.messages.welcome.mensaje + user.actCode
+                        message += config.mail.messages.welcome.footer
+                        
+                        mail.sendMail(user.email, 'Bienvenido a Elber!', message)
+                        res.status(200)
+                        return res.json(user);
+                    }
+                })
+            }else{
+                res.status(500);
+                return res.json({errMessage: `Email/Password inválido`});
+            } 
+        } else{
+            res.status(500);
+            return res.json({errMessage: `El email ${req.body.email} ya está registrado`});
         }
-    })
+    }else{
+        const newUser = new UserModel(req.body) 
+        newUser.isActive = false
+        
+        if(!validator.isEmail(newUser.email)) {
+            res.status(500);
+            return res.json({errMessage: 'El email no es válido'});
+        }
+
+        newUser.actCode = _generateCode()
+
+        const hashPassword = bcrypt.hashSync(req.body.password, 10);
+        newUser.password = hashPassword;
+        
+        newUser.save((err, user) => {
+            if(err){
+                res.status(500);
+                return res.json({errMessage: err.message});
+            } else {
+                user.password = undefined;
+                const mail = mailService()
+            
+                let message = config.mail.messages.welcome.saludo + user.name
+                message += config.mail.messages.welcome.mensaje + user.actCode
+                message += config.mail.messages.welcome.footer
+                
+                mail.sendMail(user.email, 'Bienvenido a Elber!', message)
+                res.status(200)
+                return res.json(user);
+            }
+        })
+    }
 }
 
 module.exports = () => {
