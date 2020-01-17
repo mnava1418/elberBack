@@ -20,9 +20,19 @@ const _getUser = async (email) => {
 }
 
 const register = async(req, res) => {
+    if(req.body.source !== config.app.iosName){
+        res.status(500);
+        return res.json({errMessage: 'Acceso denegado'});
+    }
+
     const existingUser = await _getUser(req.body.email);
 
     if(existingUser) {
+        if(!existingUser.isActive){
+            res.status(200)
+            return res.json(existingUser);
+        }
+
         res.status(500);
         return res.json({errMessage: `El email ${req.body.email} ya está registrado`});
     }
@@ -59,6 +69,7 @@ const register = async(req, res) => {
             message += config.mail.messages.welcome.footer
             
             mail.sendMail(user.email, 'Bienvenido a Elber!', message)
+            res.status(200)
             return res.json(user);
         }
     })

@@ -1,6 +1,9 @@
 module.exports = {
+    app: {
+        iosName: 'mx.com.mnava.Elber'
+    },
     mongoDB: {
-        development : {
+        development: {
             dbURL: 'mongodb://localhost:37017/Elber',
         }
     },
