@@ -11,6 +11,8 @@
     "crypto": "^1.0.1",
     "debug": "^4.1.1",
     "express": "^4.17.1",
+    "express-rate-limit": "^5.0.0",
+    "helmet": "^3.21.2",
     "http-errors": "^1.7.3",
     "mongoose": "^5.7.14",
     "morgan": "~1.9.1",
