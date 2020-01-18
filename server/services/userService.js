@@ -16,16 +16,21 @@ const login = async(req, res) => {
 
     if(existingUser){
         if(existingUser.comparePassword(req.body.password, existingUser.password)){
-            if(!existingUser.isActive) {
-                existingUser.isActive = true
-                existingUser.save()
+            if(!existingUser.isActive && req.body.isNew !== "1"){
+                res.status(500);
+                return res.json({errMessage: `Registro no completado. Continue en SigUp`});
+            } else{
+                if(!existingUser.isActive) {
+                    existingUser.isActive = true
+                    existingUser.save()
+                }
+                res.status(200)
+                return res.json({userName: existingUser.name, token: jwt.sign({
+                    email: existingUser.email,
+                    name: existingUser.name,
+                    _id: existingUser.id
+                }, config.app.jwtPwd)})
             }
-            res.status(200)
-            return res.json({token: jwt.sign({
-                email: existingUser.email,
-                name: existingUser.name,
-                _id: existingUser.id
-            }, config.app.jwtPwd)})
         } else{
             res.status(500);
             return res.json({errMessage: `Email/Password incorrecto`});
