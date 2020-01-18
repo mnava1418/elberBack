@@ -1,6 +1,7 @@
 module.exports = {
     app: {
-        iosName: 'mx.com.mnava.Elber'
+        iosName: 'mx.com.mnava.Elber',
+        jwtPwd: 'RestTokenElber'
     },
     mongoDB: {
         development: {

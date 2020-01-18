@@ -1,17 +1,39 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
-const UserModel = require('../models/mongoose/User')
-const mailService = require('./mailService')
-const config = require('../config/index')
-const crypto = require('crypto')
+const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
+const UserModel = require('../models/mongoose/User');
+const mailService = require('./mailService');
+const config = require('../config/index');
 
-const login = (req, res) => {
-    res.send('Login Service');
-}
+const login = async(req, res) => {
+    if(req.body.source !== config.app.iosName){
+        res.status(500);
+        return res.json({errMessage: 'Acceso denegado'});
+    }
+    const existingUser = await _getUser(req.body.email);
 
-const logout = (req, res) => {
-    res.send('Logout Service');
+    if(existingUser){
+        if(existingUser.comparePassword(req.body.password, existingUser.password)){
+            if(!existingUser.isActive) {
+                existingUser.isActive = true
+                existingUser.save()
+            }
+            res.status(200)
+            return res.json({token: jwt.sign({
+                email: existingUser.email,
+                name: existingUser.name,
+                _id: existingUser.id
+            }, config.app.jwtPwd)})
+        } else{
+            res.status(500);
+            return res.json({errMessage: `Email/Password incorrecto`});
+        } 
+    } else {
+        res.status(500);
+        return res.json({errMessage: 'Email/Password incorrecto'})
+    }
 }
 
 const _getUser = async (email) => {
@@ -27,6 +49,16 @@ const _generateCode = () => {
     }
 
     return actCode
+}
+
+const _sendWelcomeEmail = (user) => {
+    const mail = mailService()
+                       
+    let message = config.mail.messages.welcome.saludo + user.name
+    message += config.mail.messages.welcome.mensaje + user.actCode
+    message += config.mail.messages.welcome.footer
+    
+    mail.sendMail(user.email, 'Bienvenido a Elber!', message)
 }
 
 const register = async(req, res) => {
@@ -48,20 +80,14 @@ const register = async(req, res) => {
                         return res.json({errMessage: err.message});
                     } else {
                         user.password = undefined;
-                        const mail = mailService()
-                       
-                        let message = config.mail.messages.welcome.saludo + user.name
-                        message += config.mail.messages.welcome.mensaje + user.actCode
-                        message += config.mail.messages.welcome.footer
-                        
-                        mail.sendMail(user.email, 'Bienvenido a Elber!', message)
+                        _sendWelcomeEmail(user)
                         res.status(200)
                         return res.json(user);
                     }
                 })
             }else{
                 res.status(500);
-                return res.json({errMessage: `Email/Password inválido`});
+                return res.json({errMessage: `Email/Password incorrecto`});
             } 
         } else{
             res.status(500);
@@ -87,13 +113,7 @@ const register = async(req, res) => {
                 return res.json({errMessage: err.message});
             } else {
                 user.password = undefined;
-                const mail = mailService()
-            
-                let message = config.mail.messages.welcome.saludo + user.name
-                message += config.mail.messages.welcome.mensaje + user.actCode
-                message += config.mail.messages.welcome.footer
-                
-                mail.sendMail(user.email, 'Bienvenido a Elber!', message)
+                _sendWelcomeEmail(user)
                 res.status(200)
                 return res.json(user);
             }
@@ -104,7 +124,6 @@ const register = async(req, res) => {
 module.exports = () => {
     return {
         login,
-        logout,
         register
     }
 }
