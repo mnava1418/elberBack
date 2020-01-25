@@ -33,6 +33,21 @@ mongoose.connect(config.mongoDB[env].dbURL, { useNewUrlParser: true, useUnifiedT
  */
 
 var server = http.createServer(app);
+const io = require('socket.io')(server);
+
+//Init  socket.io
+io.on('connection', (socket) => {
+  console.log(`a user connected: ${socket.id}`);
+
+  socket.on('disconnect', () => {
+      console.log(`a user disconnected: ${socket.id}`)
+  })
+
+  socket.on('elber request', (message) =>{
+      console.log(message)
+      io.to(`${socket.id}`).emit('elber response', 'Que pedo cabron!');
+  } )
+});
 
 /**
  * Listen on provided port, on all network interfaces.
