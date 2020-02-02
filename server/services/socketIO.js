@@ -1,4 +1,5 @@
 var io = require('socket.io')
+const elberService = require('./elberService')
 
 module.exports = (server) => {
     io = io(server)
@@ -10,8 +11,10 @@ module.exports = (server) => {
             console.log(`a user disconnected from socket: ${socket.id}`)
         })
       
-        socket.on('elber request', (message) =>{
-            io.to(`${socket.id}`).emit('elber response', message);
+        socket.on('elber request', async (message) =>{
+            console.log(`${socket.id} is sending a request to elber`)
+            let response = await elberService().callIntent(message)
+            io.to(`${socket.id}`).emit('elber response', response);
         } )
     });
 }
