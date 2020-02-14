@@ -1,12 +1,12 @@
 const nodemailer = require('nodemailer')
-const config = require('../config/index')
+const appAuth = require('../auth/appAuth')
 
 const sendMail  = (to, subject, message) => {
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: config.mail.user,
-            pass: config.mail.password,
+            user: appAuth.mail.user,
+            pass: appAuth.mail.password,
         }
     })
 

@@ -6,9 +6,10 @@ const jwt = require('jsonwebtoken');
 const UserModel = require('../models/mongoose/User');
 const mailService = require('./mailService');
 const config = require('../config/index');
+const appAuth = require("../auth/appAuth")
 
 const login = async(req, res) => {
-    if(req.body.source !== config.app.iosName){
+    if(req.body.source !== appAuth.app.iosName){
         res.status(500);
         return res.json({errMessage: 'Acceso denegado'});
     }
@@ -29,7 +30,7 @@ const login = async(req, res) => {
                     email: existingUser.email,
                     name: existingUser.name,
                     _id: existingUser.id
-                }, config.app.jwtPwd)})
+                }, appAuth.app.jwtPwd)})
             }
         } else{
             res.status(500);
@@ -67,7 +68,7 @@ const _sendWelcomeEmail = (user) => {
 }
 
 const register = async(req, res) => {
-    if(req.body.source !== config.app.iosName){
+    if(req.body.source !== appAuth.app.iosName){
         res.status(500);
         return res.json({errMessage: 'Acceso denegado'});
     }
