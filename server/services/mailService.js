@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer')
 const appAuth = require('../auth/appAuth')
 
 const sendMail  = (to, subject, message) => {
-    var transporter = nodemailer.createTransport({
+    const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
             user: appAuth.mail.user,
@@ -10,7 +10,7 @@ const sendMail  = (to, subject, message) => {
         }
     })
 
-    var mailOptions = {
+    const mailOptions = {
         from: 'Elber <elbergun1418@gmail.com>',
         to: to,
         subject: subject,
