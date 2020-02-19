@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer')
-const appAuth = require('../auth/appAuth')
+const appAuth = require('../config/appAuth')
 
 const sendMail  = (to, subject, message) => {
     const transporter = nodemailer.createTransport({
