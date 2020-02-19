@@ -7,30 +7,29 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const indexRouter = require('./routes');
 
-var app = express();
+//DOS Attacks
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // limit each IP to 100 requests per windowMs
+});
+
+const app = express();
+app.locals.title = 'Elber';
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+//app middlewares
 app.use(helmet());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static('public'));
-
-//DOS Attacks
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
-});
- 
-//  apply to all requests
 app.use(limiter);
 
-app.locals.title = 'Elber';
-
+//app routes
 app.use('/', indexRouter());
 
 // catch 404 and forward to error handler
@@ -40,8 +39,6 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-
   if(err.status == 404 )
     res.locals.message = 'Oops! Esta página no existe.'
   else
