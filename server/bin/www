@@ -1,78 +1,58 @@
 #!/usr/bin/env node
 
-/**
- * Module dependencies.
- */
-
-const app = require('../app');
 const debug = require('debug')('elber:server');
 const http = require('http');
-const appAuth = require('../auth/appAuth')
 const mongoose = require('mongoose');
-const socketIOService = require('../services/socketIO')
+const app = require('../app');
+const mongooseLoader = require('../loaders/mongooseLoader');
+const socketIOLoader = require('../loaders/socketIOLoader');
 
-/**
- * Get port from environment and store in Express.
- */
+//const socketIOService = require('../services/socketIO');
 
-var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
-
+var server = undefined;
 const env = app.get('env');
 
-// Connection to MongoDB
-mongoose.connect(appAuth.mongoDB[env].dbURL, { useNewUrlParser: true, useUnifiedTopology: true}, (err) => {
-  if(err){
-    console.log(err)
-  } else {
-    console.log("Connected to Mongo!!");
-  }
-})
+async function startServer () {
+  const port = normalizePort(process.env.PORT || '3000');
+  app.set('port', port);
 
-/**
- * Create HTTP server.
- */
+  server = await http.createServer(app);
+  server.listen(port, (err) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log(`Server listening on port: ${port}...`);
+    //Moongose Loader
+    mongooseLoader(env);
 
-var server = http.createServer(app);
+    //SocketIO Loader
+    socketIOLoader(server);
+  });
 
-//Socket Service
-socketIOService(server)
+  server.on('error', onError);
+  server.on('listening', onListening);
+}
 
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
-
-/**
- * Normalize a port into a number, string, or false.
- */
-
+//Normalize a port into a number, string, or false.
 function normalizePort(val) {
-  var port = parseInt(val, 10);
+  const port = parseInt(val, 10);
 
   if (isNaN(port)) {
-    // named pipe
     return val;
   }
 
   if (port >= 0) {
-    // port number
     return port;
   }
 
   return false;
 }
 
-/**
- * Event listener for HTTP server "error" event.
- */
-
+//Event listener for HTTP server "error" event.
 function onError(error) {
   if (error.syscall !== 'listen') {
-    throw error;
+  throw error;
   }
 
   var bind = typeof port === 'string'
@@ -93,15 +73,26 @@ function onError(error) {
       throw error;
   }
 }
-
-/**
- * Event listener for HTTP server "listening" event.
- */
-
-function onListening() {
+//Event listener for HTTP server "listening" event.
+ function onListening() {
   var addr = server.address();
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+process.on('SIGINT', async () => {
+  console.log('Stoping server...');
+  mongoose.disconnect((err) => {
+    if(err) {
+        console.log(err)
+    }else {
+        console.log('Mongo connection closed')
+        process.exit(0);
+    }
+  })
+  
+})
+
+startServer();
