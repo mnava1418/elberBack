@@ -1,12 +1,11 @@
 const express = require('express');
-const userService = require('../services/userService');
+const userController = require('../controllers/userController')
 const utilityController = require('../controllers/utilityController')
 
 const router = express.Router();
-const user = userService();
 
 module.exports = () =>{
-  router.post('/register', utilityController.validateSourceApp, user.register);
+  router.post('/register', utilityController.validateSourceApp, userController.register);
 
   return router;
 }
