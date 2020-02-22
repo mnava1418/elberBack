@@ -1,5 +1,7 @@
-const appAuth = require("../config/appAuth")
 const crypto = require('crypto');
+const appAuth = require('../config/appAuth');
+const config = require('../config/index');
+const mailService = require('./mailService');
 
 const validateSourceApp = (source) => {
     if( source === appAuth.app.iosName) {
@@ -7,6 +9,16 @@ const validateSourceApp = (source) => {
     }
         
     return false
+}
+
+const sendWelcomeEmail = (user) => {
+    const welcomeMessage = config.mail.messages.welcome;
+                       
+    let message = welcomeMessage.saludo + user.name;
+    message += welcomeMessage.mensaje + user.actCode;
+    message += welcomeMessage.footer;
+    
+    mailService.sendMail(user.email, welcomeMessage.subject, message);
 }
 
 const generateActivationCode = () => {
@@ -21,5 +33,6 @@ const generateActivationCode = () => {
 
 module.exports = {
     validateSourceApp,
-    generateActivationCode
+    generateActivationCode,
+    sendWelcomeEmail
 }

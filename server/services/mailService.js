@@ -26,8 +26,6 @@ const sendMail  = (to, subject, message) => {
     })
 }
 
-module.exports = () => {
-    return {
-        sendMail
-    }
+module.exports = {
+    sendMail
 }
