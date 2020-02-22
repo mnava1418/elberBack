@@ -5,6 +5,17 @@ const getUser = async (email) => {
     return user;
 }
 
+const createUser = async (currentUser) => {
+    let newUser = new UserModel(currentUser.getUserAsObject());
+    
+    newUser = await newUser.save().catch((err) => {
+        return {errMessage: err.message};
+    })
+    newUser.password = undefined
+    return newUser
+}
+
 module.exports = {
-    getUser
+    getUser,
+    createUser
 }
