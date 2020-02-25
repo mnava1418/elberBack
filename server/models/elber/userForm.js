@@ -38,12 +38,20 @@ class UserForm {
         return _password
     }
 
+    getActCode() {
+        return _actCode
+    }
+
     setActCode(actCode) {
         _actCode = actCode
     }
 
     setPassword(password) {
         _password = password
+    }
+
+    setIsActive(isActive) {
+        _isActive = isActive
     }
 
     isEmailValid()
