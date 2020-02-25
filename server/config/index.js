@@ -24,8 +24,5 @@ module.exports = {
                 errMessage: 'Email/Password incorrecto'
             }
         }
-    },
-    userStatus: {
-        isNew: '1'
     }
 }
