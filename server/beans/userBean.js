@@ -10,7 +10,13 @@ const createUser = async (currentUser) => {
     return newUser;
 }
 
+const updateUser = async (existingUser) => {
+    existingUser = await userDao.updateUser(existingUser);
+    return existingUser;
+}
+
 module.exports = {
     getUser,
     createUser,
+    updateUser
 }

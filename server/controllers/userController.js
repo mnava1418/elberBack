@@ -11,6 +11,7 @@ const register = async (req, res) => {
 
         if(result.json.errMessage === undefined) {
             utilityService.sendWelcomeEmail(result.json)
+            result.json.actCode = undefined
         }
 
         res.status(result.status).json(result.json);
@@ -20,6 +21,14 @@ const register = async (req, res) => {
     }
 }
 
+const login = async (req, res) => {
+    const currentUser = new UserForm(req.body);
+    const result = await userService.login(currentUser);
+
+    res.status(result.status).json(result.json);
+}
+
 module.exports = {
-    register
+    register,
+    login
 }

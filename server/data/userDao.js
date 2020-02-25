@@ -15,7 +15,15 @@ const createUser = async (currentUser) => {
     return newUser
 }
 
+const updateUser = async (existingUser) => {
+    await existingUser.save().catch((err) => {
+        return {errMessage: err.message};
+    })
+    return existingUser
+}
+
 module.exports = {
     getUser,
-    createUser
+    createUser,
+    updateUser
 }
