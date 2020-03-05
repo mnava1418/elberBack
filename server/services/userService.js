@@ -22,7 +22,7 @@ const login = async (currentUser) => {
     if(existingUser && existingUser.comparePassword(currentUser.getPassword(), existingUser.password)) {
         if(!existingUser.isActive && existingUser.actCode != currentUser.getActCode()){
             result.status = errorMessages.invalidUser.code;
-            result.json = {errMessage: errorMessages.invalidUser.errMessage};    
+            result.json = {errMessage: errorMessages.invalidUser.errMessage, isActive: false};    
         } else {
             await activateUser(existingUser);
 
