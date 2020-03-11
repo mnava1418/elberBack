@@ -27,7 +27,7 @@ const login = async (currentUser) => {
             await activateUser(existingUser);
 
             result.status = 200;
-            result.json = {userName: existingUser.name, token: jwt.sign({
+            result.json = {user: {email: existingUser.email, name: existingUser.name}, token: jwt.sign({
                 email: existingUser.email,
                 name: existingUser.name,
                 _id: existingUser.id
