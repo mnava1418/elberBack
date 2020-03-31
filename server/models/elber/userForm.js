@@ -6,6 +6,7 @@ let _password = undefined
 let _img = undefined
 let _actCode = undefined
 let _isActive = undefined
+let _id = undefined
 
 class UserForm {
     constructor(reqUserBody) {
@@ -24,7 +25,7 @@ class UserForm {
             password: _password,
             img: _img,
             actCode: _actCode,
-            isActive: _isActive
+            isActive: _isActive,
         }
 
         return userAsObject
@@ -42,6 +43,14 @@ class UserForm {
         return _actCode
     }
 
+    getName() {
+        return _name
+    }
+
+    getId() {
+        return _id
+    }
+
     setActCode(actCode) {
         _actCode = actCode
     }
@@ -52,6 +61,10 @@ class UserForm {
 
     setIsActive(isActive) {
         _isActive = isActive
+    }
+
+    setId(id) {
+        _id = id
     }
 
     isEmailValid()

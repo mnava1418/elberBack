@@ -7,6 +7,7 @@ const router = express.Router();
 module.exports = () =>{
   router.post('/register', utilityController.validateSourceApp, userController.register);
   router.post('/login', utilityController.validateSourceApp, userController.login);
+  router.post('/generate', utilityController.validateSourceApp, userController.generateToken)
 
   return router;
 }

@@ -13,6 +13,18 @@ const activateUser = async (existingUser) => {
     }
 }
 
+const generateToken = (currentUser) => {
+    let result = {};
+    result.status = 200;
+    result.json = {user: {email: currentUser.getEmail(), name: currentUser.getName()}, token: jwt.sign({
+        email: currentUser.getEmail(),
+        name: currentUser.getName(),
+        _id: currentUser.getId(),
+    }, appAuth.app.jwtPwd)}
+    
+    return result
+}
+
 const login = async (currentUser) => {
 
     let result = {};
@@ -73,5 +85,6 @@ const register = async (currentUser) => {
 
 module.exports =  {
     register,
-    login
+    login, 
+    generateToken
 }
