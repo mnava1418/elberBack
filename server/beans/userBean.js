@@ -5,9 +5,19 @@ const getUser = async (email) => {
     return user;
 }
 
+const getFBUser = async (email) => {
+    const user = await userDao.getFBUser(email);
+    return user;
+}
+
 const createUser = async (currentUser) => {
     const newUser = await userDao.createUser(currentUser);
     return newUser;
+}
+
+const createFBUser = async (currentUser) => {
+    const newUser = await userDao.createFBUser(currentUser);
+    return newUser
 }
 
 const updateUser = async (existingUser) => {
@@ -18,5 +28,7 @@ const updateUser = async (existingUser) => {
 module.exports = {
     getUser,
     createUser,
-    updateUser
+    updateUser,
+    getFBUser,
+    createFBUser
 }

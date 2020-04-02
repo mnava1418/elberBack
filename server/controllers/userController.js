@@ -28,11 +28,10 @@ const login = async (req, res) => {
     res.status(result.status).json(result.json);
 }
 
-const generateToken = (req, res) => {
+const faceBookLogin = async (req, res) => {
     if(req.headers.facebookid && req.headers.facebookid.split(' ')[0] === 'FB' && req.headers.facebookid.split(' ')[1].length > 0){
         const currentUser = new UserForm(req.body);
-        currentUser.setId(req.headers.facebookid.split(' ')[1])
-        const result = userService.generateToken(currentUser)
+        const result = await userService.faceBookLogin(currentUser)
         res.status(result.status).json(result.json);
     } else {
         const accessDeniedError = config.errorMessages.userService.accessDenied;
@@ -43,5 +42,5 @@ const generateToken = (req, res) => {
 module.exports = {
     register,
     login,
-    generateToken
+    faceBookLogin
 }

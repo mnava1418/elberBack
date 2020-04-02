@@ -31,6 +31,15 @@ class UserForm {
         return userAsObject
     }
 
+    getFBUserAsObject() {
+        const userAsObject = {
+            email: _email,
+            name: _name,
+        }
+
+        return userAsObject
+    }
+
     getEmail() {
         return _email
     }
