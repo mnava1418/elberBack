@@ -15,6 +15,7 @@ const activateUser = async (existingUser) => {
 
 const faceBookLogin = async (currentUser) => {
     let result = {};
+    let isNewUser = false;
     const existingUser = await userBean.getUser(currentUser.getEmail())
 
     if(existingUser) {
@@ -22,14 +23,15 @@ const faceBookLogin = async (currentUser) => {
         result.json = {errMessage: `El email ${currentUser.getEmail()} ya está registrado`}
 
     } else {
-        var fbUser = await userBean.getFBUser(currentUser.getEmail())
+        let fbUser = await userBean.getFBUser(currentUser.getEmail())
 
         if(!fbUser){
             fbUser = await userBean.createFBUser(currentUser)
+            isNewUser = true
         }
         
         result.status = 200;
-        result.json = {user: {email: fbUser.email, name: fbUser.name}, token: jwt.sign({
+        result.json = {isNewUser: isNewUser, user: {email: fbUser.email, name: fbUser.name}, token: jwt.sign({
             email: fbUser.email,
             name: fbUser.name,
             _id: fbUser.id
