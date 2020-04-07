@@ -1,4 +1,5 @@
 const UserForm = require('../models/elber/userForm');
+const PasswordForm = require('../models/elber/passwordForm');
 const userService = require('../services/userService');
 const utilityService = require('../services/utilityService');
 const config = require('../config/index');
@@ -19,6 +20,13 @@ const register = async (req, res) => {
         const invalidEmailError = config.errorMessages.userService.invalidEmail;
         res.status(invalidEmailError.code).json({errMessage: invalidEmailError.errMessage});
     }
+}
+
+const changePassword = async (req, res) => {
+    const passwordModel = new PasswordForm(req.body)
+    const result = await userService.changePassword(passwordModel)
+
+    res.status(result.status).json(result.json);
 }
 
 const login = async (req, res) => {
@@ -42,5 +50,6 @@ const faceBookLogin = async (req, res) => {
 module.exports = {
     register,
     login,
-    faceBookLogin
+    faceBookLogin,
+    changePassword
 }

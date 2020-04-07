@@ -41,6 +41,31 @@ const faceBookLogin = async (currentUser) => {
     return result
 }
 
+const changePassword = async (passwordModel) => {
+    let result = {};
+    let errorMessages = config.errorMessages.userService;
+    let existingUser = await userBean.getUser(passwordModel.getEmail());
+
+    if(existingUser && existingUser.comparePassword(passwordModel.getCurrentPassword(), existingUser.password)) {
+        const hashPassword = bcrypt.hashSync(passwordModel.getNewPassword(), 10);
+        existingUser.password = hashPassword
+        existingUser = await userBean.updateUser(existingUser)
+
+        if(existingUser.errMessage){
+            result.status = 500
+            result.json = existingUser
+        } else {
+            result.status = 200
+            result.json = {message: "Ok"}
+        }
+    } else {
+        result.status = errorMessages.invalidUser.code;
+        result.json = {errMessage: errorMessages.invalidUser.errMessage};
+    }
+    
+    return result
+}
+
 const login = async (currentUser) => {
 
     let result = {};
@@ -103,5 +128,6 @@ const register = async (currentUser) => {
 module.exports =  {
     register,
     login, 
-    faceBookLogin
+    faceBookLogin,
+    changePassword
 }
