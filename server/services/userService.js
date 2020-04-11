@@ -51,7 +51,8 @@ const recoverPassword = async(email) => {
     if(existingUser){
         const newPassword = pwdGenerator.generate({length: 10, numbers: true}) + Math.floor(Math.random() * 10);
         const saltPassword = utilityService.saltPassword(email, newPassword);
-        const hashPassword = bcrypt.hashSync(saltPassword, 10);
+        const salt = bcrypt.genSaltSync(10);
+        const hashPassword = bcrypt.hashSync(saltPassword, salt);
         
         existingUser.password = hashPassword
         existingUser = await userBean.updateUser(existingUser)
@@ -73,7 +74,8 @@ const changePassword = async (passwordModel) => {
     let existingUser = await userBean.getUser(passwordModel.getEmail());
 
     if(existingUser && existingUser.comparePassword(passwordModel.getCurrentPassword(), existingUser.password)) {
-        const hashPassword = bcrypt.hashSync(passwordModel.getNewPassword(), 10);
+        const salt = bcrypt.genSaltSync(10);
+        const hashPassword = bcrypt.hashSync(passwordModel.getNewPassword(), salt);
         existingUser.password = hashPassword
         existingUser = await userBean.updateUser(existingUser)
 
@@ -131,8 +133,9 @@ const register = async (currentUser) => {
 
     } else {
         const actCode = utilityService.generateActivationCode();
-        const hashPassword = bcrypt.hashSync(currentUser.getPassword(), 10);
-
+        const salt = bcrypt.genSaltSync(10);
+        const hashPassword = bcrypt.hashSync(currentUser.getPassword(), salt);
+        
         currentUser.setActCode(actCode);
         currentUser.setPassword(hashPassword);
         currentUser.setIsActive(false);
