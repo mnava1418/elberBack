@@ -11,6 +11,12 @@ const validateSourceApp = (source) => {
     return false
 }
 
+const sendRecoverPwdEmail = (email, pwd) => {
+    const recoverPwdMessage = config.mail.messages.recoverPwd;
+    let message = recoverPwdMessage.saludo + recoverPwdMessage.mensaje + pwd + recoverPwdMessage.footer;
+    mailService.sendMail(email, recoverPwdMessage.subject, message);
+}
+
 const sendWelcomeEmail = (user) => {
     const welcomeMessage = config.mail.messages.welcome;
                        
@@ -31,8 +37,18 @@ const generateActivationCode = () => {
     return actCode
 }
 
+const saltPassword = (email, currentPassword) => {
+    const emailArr = email.split("@")
+    const startSalt = emailArr[0].replace(/ /g, "")
+    const endSalt = startSalt.length
+    let newPwd = startSalt + currentPassword + endSalt
+    return newPwd
+}
+
 module.exports = {
     validateSourceApp,
     generateActivationCode,
-    sendWelcomeEmail
+    sendWelcomeEmail,
+    saltPassword,
+    sendRecoverPwdEmail
 }

@@ -4,6 +4,7 @@ const config = require('../config/index');
 const appAuth = require("../config/appAuth")
 const userBean = require('../beans/userBean')
 const utilityService = require('./utilityService')
+var pwdGenerator = require('generate-password');
 
 const activateUser = async (existingUser) => {
     if(!existingUser.isActive){
@@ -38,6 +39,31 @@ const faceBookLogin = async (currentUser) => {
         }, appAuth.app.jwtPwd)}
     }
     
+    return result
+}
+
+const recoverPassword = async(email) => {
+    let result = {};
+    result.status = 200;
+    result.json = {message: "Ok"}
+    let existingUser = await userBean.getUser(email);
+
+    if(existingUser){
+        const newPassword = pwdGenerator.generate({length: 10, numbers: true}) + Math.floor(Math.random() * 10);
+        const saltPassword = utilityService.saltPassword(email, newPassword);
+        const hashPassword = bcrypt.hashSync(saltPassword, 10);
+        
+        existingUser.password = hashPassword
+        existingUser = await userBean.updateUser(existingUser)
+
+        if(existingUser.errMessage){
+            result.status = 500
+            result.json = existingUser
+        } else {
+            utilityService.sendRecoverPwdEmail(email,newPassword)
+        }
+    }
+
     return result
 }
 
@@ -129,5 +155,6 @@ module.exports =  {
     register,
     login, 
     faceBookLogin,
-    changePassword
+    changePassword,
+    recoverPassword
 }

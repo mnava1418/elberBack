@@ -29,6 +29,13 @@ const changePassword = async (req, res) => {
     res.status(result.status).json(result.json);
 }
 
+const recoverPassword = async (req, res) => {
+    const email = req.body.email
+    const result = await userService.recoverPassword(email)
+
+    res.status(result.status).json(result.json);
+}
+
 const login = async (req, res) => {
     const currentUser = new UserForm(req.body);
     const result = await userService.login(currentUser);
@@ -51,5 +58,6 @@ module.exports = {
     register,
     login,
     faceBookLogin,
-    changePassword
+    changePassword,
+    recoverPassword
 }
