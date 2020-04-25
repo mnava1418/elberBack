@@ -4,7 +4,8 @@ dotenv.config();
 module.exports = {
     app: {
         iosName: process.env.IOS_APP_NAME,
-        jwtPwd: process.env.JWT_PWD
+        jwtPwd: process.env.JWT_PWD,
+        yandexKey: process.env.YANDEX_API_KEY
     },
     mongoDB: {
         development: {
