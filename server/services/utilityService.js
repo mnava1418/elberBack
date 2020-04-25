@@ -54,11 +54,24 @@ const translateText = async (text, from, to) => {
     return result
 }
 
+const toCamelCase = (text) => {
+    let finalText = ''
+    let arr = text.split(" ")
+
+    for(i = 0; i < arr.length; i++){
+        let word = arr[i]
+        finalText = `${finalText}${word.charAt(0).toUpperCase()}${word.slice(1).toLowerCase()} `
+    }
+
+    return finalText.trim()
+}
+
 module.exports = {
     validateSourceApp,
     generateActivationCode,
     sendWelcomeEmail,
     saltPassword,
     sendRecoverPwdEmail,
-    translateText
+    translateText,
+    toCamelCase
 }

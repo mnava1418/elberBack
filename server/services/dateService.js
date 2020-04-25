@@ -4,47 +4,51 @@ const countries = require('countries-list').countries
 const utilityServices = require('./utilityService')
 
 const getTime = async(location) => {
-    let originalCity = location.city
-    let originalCountry = location.country
-    let country = await translateLocation(originalCountry, 'es', 'en')
-    let city = originalCity
-
-    city = city.toUpperCase()
-    country = country.toUpperCase()
+    let city = location.city
+    let country = location.country
     
     if(city == "" && country != ""){
         city = getCapital(country)
-        city = await translateLocation(city, 'es', 'en')
-    } else {
-        city = await translateLocation(city, 'es', 'en')
-    }
+    } 
 
     const tzInfo = await getTZInfo(country, city)
     let currentTime = 'Tu pinche pueblo no existe'
    
     if( tzInfo != undefined) {
         const time = getTimebyTZ(tzInfo.timezone, 'LT')
-
-        if(originalCountry == ""){
-            originalCountry = await translateLocation(tzInfo.country, 'en', 'es')
-        }
-
-        if(originalCity == ""){
-            originalCity = await translateLocation(tzInfo.city, 'en', 'es')
-        }
-
-        currentTime = `En ${originalCity}, ${originalCountry}, son las ${time}`
+        location.city = tzInfo.city
+        location.country = tzInfo.country
+        location = await translateLocation(location, 'en', 'es')
+        city = utilityServices.toCamelCase(location.city)
+        country = utilityServices.toCamelCase(location.country)
+        currentTime = `En ${city}, ${country}, son las ${time}`
     } 
 
     return currentTime
 }
 
-const translateLocation = async(location, from, to) => {
-    if(location.length > 0) {
-        location = await utilityServices.translateText(location, from, to)
+const getLocationElement = (element) => {
+    element = element.trim().toUpperCase()
+    if(element == '' ) {
+        return 'XX'
+    } else if(element == 'XX') {
+        return ''
+    } else {
+        return element
     }
+}
 
-    return location
+const translateLocation = async(location, from, to) => {
+    let city = getLocationElement(location.city)
+    let country = getLocationElement(location.country)
+    location = `${city}|${country}`
+    location = await utilityServices.translateText(location, from, to)
+    const locationArr = location.split('|')
+    let result = {}
+    result.city = getLocationElement(locationArr[0])
+    result.country = getLocationElement(locationArr[1])
+    
+    return result
 }
 
 const getTZInfo = async (country, city) => {
@@ -100,8 +104,11 @@ const getCapital = (country) => {
 
     for(i = 0; i < countriesArr.length; i++){
         let current = countriesArr[i][1]
-        if(current.name.trim().toUpperCase().includes(country)) {
-            return current.capital.trim().toUpperCase()
+        let name = current.name.trim().toUpperCase()
+        let capital = current.capital.trim().toUpperCase()
+
+        if(name.includes(country)) {
+            return capital
         }
     }
 
@@ -114,5 +121,6 @@ const getTimebyTZ = (timeZone, format) => {
 } 
 
 module.exports = {
-    getTime
+    getTime,
+    translateLocation
 }

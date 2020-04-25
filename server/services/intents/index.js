@@ -6,7 +6,7 @@ const getResponse = async(intent, parameters, fulfillmentText) => {
     let response = "No se que quieres"
     switch (intent) {
       case intents.hora :
-          const location = processParameters.getLocation(parameters)
+          const location = await processParameters.getLocation(parameters)
           response = await dateServices.getTime(location)
           break;
       default:
