@@ -23,7 +23,7 @@ const getTime = async(location) => {
         country = utilityServices.toCamelCase(location.country)
         currentTime = `En ${city}, ${country}, son las ${time}`
     } 
-
+    
     return currentTime
 }
 
@@ -52,6 +52,9 @@ const translateLocation = async(location, from, to) => {
 }
 
 const getTZInfo = async (country, city) => {
+    city = city.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    country = country.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
     let tzInfo = citiesTZ.findFromCityStateProvince(city)
 
     if(tzInfo.length > 1 ) {
@@ -100,6 +103,7 @@ const getMaxPop = (tzInfo) => {
 }
 
 const getCapital = (country) => {
+    country = country.normalize("NFD").replace(/[\u0300-\u036f]/g, "");  
     let countriesArr = Object.entries(countries)
 
     for(i = 0; i < countriesArr.length; i++){
