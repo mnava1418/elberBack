@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const appAuth = require('../config/appAuth');
 const config = require('../config/index');
 const mailService = require('./mailService');
+const translate = require('translate')
 
 const validateSourceApp = (source) => {
     if( source === appAuth.app.iosName) {
@@ -45,10 +46,19 @@ const saltPassword = (email, currentPassword) => {
     return newPwd
 }
 
+const translateText = async (text, from, to) => {
+    translate.engine = 'yandex'
+    translate.key = appAuth.app.yandexKey
+
+    const result = await translate(text, {from: from, to: to})
+    return result
+}
+
 module.exports = {
     validateSourceApp,
     generateActivationCode,
     sendWelcomeEmail,
     saltPassword,
-    sendRecoverPwdEmail
+    sendRecoverPwdEmail,
+    translateText
 }
