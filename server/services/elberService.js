@@ -18,6 +18,7 @@ const callIntent = async (message) => {
   };
 
   const responses = await sessionClient.detectIntent(request)
+  console.log('Respuesta recibida de elber. Procesando...')
   const result = responses[0].queryResult
   const intent = result.intent.displayName.toUpperCase()
   const parameters = result.parameters.fields
