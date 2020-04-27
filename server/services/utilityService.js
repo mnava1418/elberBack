@@ -1,8 +1,10 @@
 const crypto = require('crypto');
+const translate = require('translate')
+const jwt = require('jsonwebtoken')
 const appAuth = require('../config/appAuth');
 const config = require('../config/index');
 const mailService = require('./mailService');
-const translate = require('translate')
+
 
 const validateSourceApp = (source) => {
     if( source === appAuth.app.iosName) {
@@ -10,6 +12,19 @@ const validateSourceApp = (source) => {
     }
         
     return false
+}
+
+const validateJWT = (currentJWT) => {
+    let user = undefined
+    jwt.verify(currentJWT, appAuth.app.jwtPwd, (err, decode) => {
+        if(err) {
+            user = undefined
+        } else {
+            user = decode
+        }
+    })
+
+    return user
 }
 
 const sendRecoverPwdEmail = (email, pwd) => {
@@ -73,5 +88,6 @@ module.exports = {
     saltPassword,
     sendRecoverPwdEmail,
     translateText,
-    toCamelCase
+    toCamelCase,
+    validateJWT
 }
