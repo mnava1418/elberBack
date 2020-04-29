@@ -41,9 +41,9 @@ const getLocationElement = (element) => {
 const translateLocation = async(location, from, to) => {
     let city = getLocationElement(location.city)
     let country = getLocationElement(location.country)
-    location = `${city}|${country}`
+    location = `${city},${country}`
     location = await utilityServices.translateText(location, from, to)
-    const locationArr = location.split('|')
+    const locationArr = location.split(',')
     let result = {}
     result.city = getLocationElement(locationArr[0])
     result.country = getLocationElement(locationArr[1])

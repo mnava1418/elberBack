@@ -7,7 +7,7 @@ const getLocation = async(parameters) => {
     const fields = locationEntry[locationEntry.kind].fields
 
     if (fields != undefined) {
-        city = fields.city[fields.city.kind].trim()
+        city = fields.city[fields.city.kind].trim() + fields.island[fields.island.kind].trim()
         country = fields.country[fields.country.kind].trim()
     } else {
         country = "Mexico"
