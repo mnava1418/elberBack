@@ -22,7 +22,13 @@ const getTime = async(location, format) => {
         location = await translateLocation(location, 'en', 'es')
         city = utilityServices.toCamelCase(location.city)
         country = utilityServices.toCamelCase(location.country)
-        currentTime = `En ${city}, ${country}, son las ${time}`
+        currentTime = `En ${city}, ${country},`
+
+        if(format == 'LT') {
+            currentTime = `${currentTime} son las ${time}`
+        } else {
+            currentTime = `${currentTime} es ${time}`
+        }
     } 
     
     return currentTime

@@ -1,3 +1,4 @@
 module.exports = {
-    hora: 'HORA'
+    hora: 'HORA',
+    fecha: 'FECHA'
 }
