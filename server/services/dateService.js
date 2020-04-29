@@ -1,9 +1,10 @@
 const citiesTZ = require('city-timezones')
-const moment = require('moment-timezone')
+const momentTZ = require('moment-timezone')
+const moment = require('moment')
 const countries = require('countries-list').countries
 const utilityServices = require('./utilityService')
 
-const getTime = async(location) => {
+const getTime = async(location, format) => {
     let city = location.city
     let country = location.country
     
@@ -15,7 +16,7 @@ const getTime = async(location) => {
     let currentTime = 'Tu pinche pueblo no existe'
    
     if( tzInfo != undefined) {
-        const time = getTimebyTZ(tzInfo.timezone, 'LT')
+        const time = getTimebyTZ(tzInfo.timezone, format)
         location.city = tzInfo.city
         location.country = tzInfo.country
         location = await translateLocation(location, 'en', 'es')
@@ -120,8 +121,11 @@ const getCapital = (country) => {
 }
 
 const getTimebyTZ = (timeZone, format) => {
-    const time = moment().tz(timeZone).format(format)
-    return time
+    var time = momentTZ().tz(timeZone)
+    moment.locale('es');
+    time.locale(false);
+    
+    return time.format(format)
 } 
 
 module.exports = {

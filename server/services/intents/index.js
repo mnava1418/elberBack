@@ -9,7 +9,7 @@ const getResponse = async(intent, parameters, fulfillmentText) => {
         switch (intent) {
         case intents.hora :
             const location = await processParameters.getLocation(parameters)
-            response = await dateServices.getTime(location)
+            response = await dateServices.getTime(location, 'LT')
             break;
         default:
             response = fulfillmentText
