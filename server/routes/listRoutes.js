@@ -6,6 +6,7 @@ const router = express.Router();
 
 module.exports = () => {
     router.post('/createList', utilityController.validateSourceApp, utilityController.validateJWT, listController.createList)
+    router.get('/getLists', utilityController.validateSourceApp, utilityController.validateJWT, listController.getLists)
 
     return router
 }

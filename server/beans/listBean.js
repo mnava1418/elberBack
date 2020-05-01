@@ -10,7 +10,13 @@ const getListByName = async(name, email) => {
     return list
 }
 
+const getLists = async(email) => {
+    const lists = await listDao.getLists(email)
+    return lists
+}
+
 module.exports = {
     createList, 
-    getListByName
+    getListByName,
+    getLists
 }

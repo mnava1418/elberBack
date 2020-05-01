@@ -14,7 +14,13 @@ const getListByName = async(name, email) => {
     return list
 }
 
+const getLists = async(email) => {
+    const lists = await ListModel.find({email: email}).sort({updatedAt: -1})
+    return lists
+}
+
 module.exports = {
     createList,
-    getListByName
+    getListByName,
+    getLists
 }
