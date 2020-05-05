@@ -19,8 +19,16 @@ const getLists = async(email) => {
     return lists
 }
 
+const updateList = async (existingList) => {
+    await existingList.save().catch((err) => {
+        return {errMessage: err.message};
+    })
+    return existingList
+}
+
 module.exports = {
     createList,
     getListByName,
-    getLists
+    getLists,
+    updateList
 }

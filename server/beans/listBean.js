@@ -15,8 +15,14 @@ const getLists = async(email) => {
     return lists
 }
 
+const updateList = async(existingList) => {
+    const list = await listDao.updateList(existingList)
+    return list
+}
+
 module.exports = {
     createList, 
     getListByName,
-    getLists
+    getLists,
+    updateList
 }

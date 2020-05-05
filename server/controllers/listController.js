@@ -12,7 +12,16 @@ const getLists = async(req, res) => {
     res.status(result.status).json(result.json);
 }
 
+const updateListItems = async(req, res) => {
+    const email = req.user.email
+    const name = req.body.name
+    const items = req.body.items.split(',')
+    const result = await listService.updateListItems(name, email, items)
+    res.status(result.status).json(result.json);
+}
+
 module.exports = {
     createList,
-    getLists
+    getLists,
+    updateListItems
 }

@@ -33,7 +33,31 @@ const getLists = async(email) => {
     return result
 }
 
+const updateListItems = async(name, email, items) => {
+    let result = {}
+    let existingList = await listBean.getListByName(name, email)
+
+    if(existingList){
+        existingList.items = items
+        existingList = await listBean.updateList(existingList)
+
+        if(existingList.errMessage ) {
+            result.status = 500
+            result.json = existingList
+        } else {
+            result.status = 200
+            result.json = {items: existingList.items}
+        }
+    } else {
+        result.status = 500
+        result.json = {errMessage: `La lista ${list.name} no existe`}
+    }
+
+    return result
+}
+
 module.exports = {
     createList,
-    getLists
+    getLists,
+    updateListItems
 }
