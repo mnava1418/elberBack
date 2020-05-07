@@ -20,9 +20,14 @@ const updateList = async(existingList) => {
     return list
 }
 
+const deleteList = async(name, email) => {
+    await listDao.deleteList(name, email)
+}
+
 module.exports = {
     createList, 
     getListByName,
     getLists,
-    updateList
+    updateList,
+    deleteList
 }

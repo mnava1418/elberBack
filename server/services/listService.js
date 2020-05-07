@@ -56,8 +56,15 @@ const updateListItems = async(name, email, items) => {
     return result
 }
 
+const deleteList = async(name, email) => {
+    await listBean.deleteList(name, email)
+    let result = await getLists(email)
+    return result
+}
+
 module.exports = {
     createList,
     getLists,
-    updateListItems
+    updateListItems, 
+    deleteList
 }

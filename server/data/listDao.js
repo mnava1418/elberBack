@@ -26,9 +26,14 @@ const updateList = async (existingList) => {
     return existingList
 }
 
+const deleteList = async (name, email) => {
+    await ListModel.deleteOne({name: name, email: email})
+}
+
 module.exports = {
     createList,
     getListByName,
     getLists,
-    updateList
+    updateList,
+    deleteList,
 }
