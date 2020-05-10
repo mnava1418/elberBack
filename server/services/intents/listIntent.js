@@ -16,6 +16,22 @@ const getLists = async(email, response) => {
     return response
 }
 
+const createList = async(listName, email, response) => {
+    if(listName.trim() == "") {
+        return response
+    } else {
+        const list = {name: listName, items: []}
+        const result = await listService.createList(list, email)
+
+        if(result.json.errMessage != undefined){
+            response = result.json.errMessage
+        }
+
+        return response
+    }
+}
+
 module.exports = {
-    getLists
+    getLists,
+    createList
 }

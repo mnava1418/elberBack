@@ -21,6 +21,13 @@ const getLocation = async(parameters) => {
     return location
 }
 
+const getListName = (parameters) => {
+    const listType = parameters.listType
+    const listName = listType[listType.kind]
+    return listName.trim()
+}
+
 module.exports = {
-    getLocation
+    getLocation,
+    getListName
 }

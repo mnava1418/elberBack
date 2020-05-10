@@ -1,8 +1,10 @@
 const listBean = require('../beans/listBean')
+const utilityService = require('./utilityService')
 
 const createList = async(list, email) => {
     let result = {}
     list.email = email
+    list.name = utilityService.toCamelCase(list.name)
     list.listId = email+list.name
     const existingList = await listBean.getListByName(list.name, list.email)
 

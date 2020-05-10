@@ -6,6 +6,7 @@ const listIntents = require('./listIntent')
 const getResponse = async(email, intent, parameters, fulfillmentText) => {
     let response = "No se que quieres"
     let location = ""
+    let listName = ""
 
     try{
         switch (intent) {
@@ -20,6 +21,10 @@ const getResponse = async(email, intent, parameters, fulfillmentText) => {
         case intents.getLists :
             response = await listIntents.getLists(email, fulfillmentText)
             break;
+        case intents.createList :
+            listName = await processParameters.getListName(parameters)
+            response = await listIntents.createList(listName, email, fulfillmentText)
+            break
         default:
             response = fulfillmentText
             break;
