@@ -21,11 +21,9 @@ module.exports = (server) => {
             let jwt = messageArr[0]
             let user = utilityService.validateJWT(jwt)
 
-            console.log(`User: ${user}`)
-
             if(messageArr.length >= 2 && user != undefined){
                 message = messageArr[1]
-                response = await elberService().callIntent(message)
+                response = await elberService().callIntent(user.email, message)
             }
 
             io.to(`${socket.id}`).emit('elber response', response);

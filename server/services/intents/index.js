@@ -1,8 +1,9 @@
 const intents = require('../../config/intents')
 const processParameters = require('./processParameters')
 const dateServices = require('../dateService')
+const listIntents = require('./listIntent')
 
-const getResponse = async(intent, parameters, fulfillmentText) => {
+const getResponse = async(email, intent, parameters, fulfillmentText) => {
     let response = "No se que quieres"
     let location = ""
 
@@ -15,6 +16,9 @@ const getResponse = async(intent, parameters, fulfillmentText) => {
         case intents.fecha :
             location = await processParameters.getLocation(parameters)
             response = await dateServices.getTime(location, 'LLLL')
+            break;
+        case intents.getLists :
+            response = await listIntents.getLists(email, fulfillmentText)
             break;
         default:
             response = fulfillmentText

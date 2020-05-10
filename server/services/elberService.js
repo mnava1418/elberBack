@@ -3,7 +3,7 @@ const uuid = require('uuid');
 const sessionId = uuid.v4();
 const intents = require('./intents')
 
-const callIntent = async (message) => {
+const callIntent = async (email, message) => {
   const sessionClient = new dialogFlow.SessionsClient();
   const sessionPath = sessionClient.sessionPath("elber-fiymle", sessionId);
 
@@ -23,7 +23,7 @@ const callIntent = async (message) => {
   const intent = result.intent.displayName.toUpperCase()
   const parameters = result.parameters.fields
   const fulfillmentText = result.fulfillmentText
-  const response = await intents.getResponse(intent, parameters, fulfillmentText)
+  const response = await intents.getResponse(email, intent, parameters, fulfillmentText)
 
   console.log(` Query: ${result.queryText}`);
   console.log(` Response: ${response}`);

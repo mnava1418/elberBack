@@ -1,4 +1,5 @@
 module.exports = {
     hora: 'HORA',
-    fecha: 'FECHA'
+    fecha: 'FECHA',
+    getLists: 'LISTS.GETALL'
 }
