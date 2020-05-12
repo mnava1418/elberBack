@@ -1,6 +1,12 @@
 module.exports = {
-    hora: 'HORA',
-    fecha: 'FECHA',
-    getLists: 'LISTS.GETALL',
-    createList: 'LISTS.CREATE',
+    date: {
+        hora: 'HORA',
+        fecha: 'FECHA'
+    },
+    lists: {
+        getLists: 'LISTS.GETALL',
+        createList: 'LISTS.CREATE',
+        deleteList: 'LISTS.DELETE',
+        addItems: 'LISTS.ADDITEMS'
+    }
 }

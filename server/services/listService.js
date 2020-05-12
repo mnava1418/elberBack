@@ -35,7 +35,23 @@ const getLists = async(email) => {
     return result
 }
 
+const getListbyName = async(name, email) => {
+    name = utilityService.toCamelCase(name)
+    let result = {}
+    result.status = 200
+    let existingList = await listBean.getListByName(name, email)
+
+    if(existingList){
+        result.json = {list: existingList}
+    } else {
+        result.json = {list: undefined}
+    }
+
+    return result
+}
+
 const updateListItems = async(name, email, items) => {
+    name = utilityService.toCamelCase(name)
     let result = {}
     let existingList = await listBean.getListByName(name, email)
 
@@ -59,6 +75,7 @@ const updateListItems = async(name, email, items) => {
 }
 
 const deleteList = async(name, email) => {
+    name = utilityService.toCamelCase(name)
     await listBean.deleteList(name, email)
     let result = await getLists(email)
     return result
@@ -68,5 +85,6 @@ module.exports = {
     createList,
     getLists,
     updateListItems, 
-    deleteList
+    deleteList,
+    getListbyName
 }

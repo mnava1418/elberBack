@@ -27,7 +27,14 @@ const getListName = (parameters) => {
     return listName.trim()
 }
 
+const getListItem = (parameters) => {
+    let listItem = parameters.any
+    listItem = listItem[listItem.kind]
+    return listItem = listItem.trim()
+}
+
 module.exports = {
     getLocation,
-    getListName
+    getListName,
+    getListItem
 }

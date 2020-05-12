@@ -31,7 +31,35 @@ const createList = async(listName, email, response) => {
     }
 }
 
+const deleteList = async(listName, email, response) => {
+    if(listName.trim() != "") {
+        await listService.deleteList(listName, email)
+    }
+    
+    return response
+}
+
+const addItem = async(listName, listItem, email, response) => {
+    if(listName.trim() != "" && listItem.trim() != "") {
+        let result = await listService.getListbyName(listName, email)
+        existingList = result.json.list
+
+        if(existingList == undefined){
+            response = `La lista ${listName} no existe`
+        } else{
+            let currentItems = existingList.items
+            currentItems.push(listItem)
+            await listService.updateListItems(listName, email, currentItems)
+            response = `Listo! He agregado ${listItem} en tu lista de ${listName}`
+        }
+    }
+
+    return response
+}
+
 module.exports = {
     getLists,
-    createList
+    createList,
+    deleteList,
+    addItem
 }
