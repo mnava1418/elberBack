@@ -1,7 +1,8 @@
 module.exports = {
     date: {
-        hora: 'HORA',
-        fecha: 'FECHA'
+        id: 'date',
+        hora: 'date.currenttime',
+        fecha: 'date.currentdate'
     },
     lists: {
         getLists: 'LISTS.GETALL',
