@@ -23,9 +23,10 @@ const callIntent = async (email, message) => {
   const intent = result.intent.displayName.toLowerCase()
   const parameters = result.parameters.fields
   const fulfillmentText = result.fulfillmentText
-  const response = await intents.getResponse(email, intent, parameters, fulfillmentText)
+  const query = result.queryText
+  const response = await intents.getResponse(email, intent, parameters, fulfillmentText, query)
 
-  console.log(` Query: ${result.queryText}`);
+  console.log(` Query: ${query}`);
   console.log(` Response: ${response.elberResponse}`);
   console.log(` Next Action: ${response.nextAction}`);
   console.log(` Local Function: ${response.localFunction}`);

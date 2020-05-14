@@ -9,5 +9,11 @@ module.exports = {
         createList: 'LISTS.CREATE',
         deleteList: 'LISTS.DELETE',
         addItems: 'LISTS.ADDITEMS'
+    },
+    fallback: {
+        id: 'fallback'
+    },
+    localFunctions: {
+        internetSearch: 'internetSearch'
     }
 }
