@@ -5,10 +5,11 @@ module.exports = {
         fecha: 'date.currentdate'
     },
     lists: {
-        getLists: 'LISTS.GETALL',
-        createList: 'LISTS.CREATE',
-        deleteList: 'LISTS.DELETE',
-        addItems: 'LISTS.ADDITEMS'
+        id: 'lists',
+        getLists: 'lists.getall',
+        createList: 'lists.create',
+        deleteList: 'lists.delete',
+        addItems: 'lists.additems'
     },
     fallback: {
         id: 'fallback'

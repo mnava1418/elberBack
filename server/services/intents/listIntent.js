@@ -1,65 +1,98 @@
 const listService = require('../listService')
+const processParameters = require('./processParameters')
 
-const getLists = async(email, response) => {
+const getLists = async(email, response, fulfillmentText) => {
     const result = await listService.getLists(email)
     const currentLists = result.json.lists
-
+    
     if(currentLists.length > 0 ) {
         for(let i = 0; i < currentLists.length; i++){
-            response = `${response} ${currentLists[i].name},`
+            fulfillmentText = `${fulfillmentText} ${currentLists[i].name},`
         }
-        response = response.substr(0, response.length - 1)
+        fulfillmentText = fulfillmentText.substr(0, fulfillmentText.length - 1)
     } else {
-        response = 'Aún no tienes listas pero puedo ayudarte a crear una.'
+        fulfillmentText = 'Aún no tienes listas pero puedo ayudarte a crear una. Quieres crear una lista?'
+        response.nextAction = "Crea una lista"
     }
 
+    response.elberResponse = fulfillmentText
     return response
 }
 
-const createList = async(listName, email, response) => {
+const createList = async(listName, listItem, email, fulfillmentText) => {
     if(listName.trim() == "") {
-        return response
+        return fulfillmentText
     } else {
         const list = {name: listName, items: []}
+
+        if(listItem.trim() != "") {
+            list.items.push(listItem)
+        }
         const result = await listService.createList(list, email)
 
         if(result.json.errMessage != undefined){
-            response = result.json.errMessage
+            fulfillmentText = result.json.errMessage
         }
 
-        return response
+        return fulfillmentText
     }
 }
 
-const deleteList = async(listName, email, response) => {
+const deleteList = async(listName, email, fulfillmentText) => {
     if(listName.trim() != "") {
         await listService.deleteList(listName, email)
     }
     
-    return response
+    return fulfillmentText
 }
 
-const addItem = async(listName, listItem, email, response) => {
+const addItem = async(listName, listItem, email, response, fulfillmentText) => {
     if(listName.trim() != "" && listItem.trim() != "") {
         let result = await listService.getListbyName(listName, email)
         existingList = result.json.list
 
         if(existingList == undefined){
-            response = `La lista ${listName} no existe`
+            fulfillmentText = `La lista ${listName} no existe. Quieres crearla?`
+            response.nextAction = `Crea una lista de ${listName} y agrega ${listItem}`
         } else{
             let currentItems = existingList.items
             currentItems.push(listItem)
             await listService.updateListItems(listName, email, currentItems)
-            response = `Listo! He agregado ${listItem} en tu lista de ${listName}`
+            fulfillmentText = `Listo! He agregado ${listItem} en tu lista de ${listName}`
         }
+    }
+
+    response.elberResponse = fulfillmentText
+    return response
+}
+
+const processIntent = async(intentsConfig, intent, parameters, response, email, fulfillmentText) => {
+    switch (intent) {
+        case intentsConfig.lists.getLists :
+            response = await getLists(email, response, fulfillmentText)
+            break;
+        case intentsConfig.lists.createList :
+            listName = await processParameters.getListName(parameters)
+            listItems = await processParameters.getListItem(parameters)
+            response.elberResponse = await createList(listName, listItems, email, fulfillmentText)
+            break;
+        case intentsConfig.lists.deleteList :
+            listName = await processParameters.getListName(parameters)
+            response.elberResponse = await deleteList(listName, email, fulfillmentText)
+            break;
+        case intentsConfig.lists.addItems :
+            listName = await processParameters.getListName(parameters)
+            listItems = await processParameters.getListItem(parameters)
+            response = await addItem(listName, listItems, email, response, fulfillmentText)
+            break;
+        default:
+            response = response
+            break;
     }
 
     return response
 }
 
 module.exports = {
-    getLists,
-    createList,
-    deleteList,
-    addItem
+    processIntent
 }
