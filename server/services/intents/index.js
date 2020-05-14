@@ -1,46 +1,29 @@
-const intents = require('../../config/intents')
-const processParameters = require('./processParameters')
-const dateServices = require('../dateService')
-const listIntents = require('./listIntent')
+const intentsConfig = require('../../config/intents')
+const listIntent = require('./listIntent')
+const dateIntent = require('./dateIntent')
+const fallbackIntent = require('./falbackIntent')
 
-const getResponse = async(email, intent, parameters, fulfillmentText) => {
-    let response = "No se que quieres"
-    let location = ""
-    let listName = ""
-    let listItems = []
+const getResponse = async(email, intent, parameters, fulfillmentText, query) => {
+    let response = {elberResponse: fulfillmentText, nextAction: "", localFunction: "", parameters:{}, confirmNextAction: false}
+    const intentId = intent.split('.')[0]
 
     try{
-        switch (intent) {
-        case intents.date.hora :
-            location = await processParameters.getLocation(parameters)
-            response = await dateServices.getTime(location, 'LT')
+        switch (intentId) {
+        case intentsConfig.date.id :
+            response = await dateIntent.processIntent(intent, parameters, response)
             break;
-        case intents.date.fecha :
-            location = await processParameters.getLocation(parameters)
-            response = await dateServices.getTime(location, 'LLLL')
-            break;
-        case intents.lists.getLists :
-            response = await listIntents.getLists(email, fulfillmentText)
-            break;
-        case intents.lists.createList :
-            listName = await processParameters.getListName(parameters)
-            response = await listIntents.createList(listName, email, fulfillmentText)
-            break;
-        case intents.lists.deleteList :
-            listName = await processParameters.getListName(parameters)
-            response = await listIntents.deleteList(listName, email, fulfillmentText)
-            break;
-        case intents.lists.addItems :
-            listName = await processParameters.getListName(parameters)
-            listItems = await processParameters.getListItem(parameters)
-            response = await listIntents.addItem(listName, listItems, email, fulfillmentText)
-            break;
+        case intentsConfig.lists.id :
+            response = await listIntent.processIntent(intentsConfig, intent, parameters, response, email, fulfillmentText)
+            break
+        case intentsConfig.fallback.id : 
+            response = await fallbackIntent.processIntent(intentsConfig, response, fulfillmentText, query)
+            break
         default:
-            response = fulfillmentText
+            response.elberResponse = fulfillmentText
             break;
         }
     } catch {
-        response = "No se que quieres"
+        response.elberResponse = "No se que quieres"
     }
     return response
 }
