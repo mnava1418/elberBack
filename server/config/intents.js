@@ -9,7 +9,8 @@ module.exports = {
         getLists: 'lists.getall',
         createList: 'lists.create',
         deleteList: 'lists.delete',
-        addItems: 'lists.additems'
+        addItems: 'lists.additems',
+        listContent: 'lists.getlistcontent'
     },
     fallback: {
         id: 'fallback'

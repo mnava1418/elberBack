@@ -66,7 +66,34 @@ const addItem = async(listName, listItem, email, response, fulfillmentText) => {
     return response
 }
 
+const getListContent = async(listName, email, response, fulfillmentText) => {
+    if(listName.trim() != "") {
+        const result = await listService.getListbyName(listName, email)
+        const currentList = result.json.list
+
+        if(currentList != undefined) {
+            const currentItems = currentList.items
+            if(currentItems.length > 0) {
+                fulfillmentText = `Tu lista ${listName} contiene: ${currentItems.toString()}`
+            } else {
+                fulfillmentText = `Tu lista ${listName} está vacía. Quieres que agregue algo?`
+                response.nextAction = `agrega a lista ${listName}`
+            }
+
+        } else{
+            fulfillmentText = `${fulfillmentText}. Quieres crearla?`
+            response.nextAction = `Crea una lista de ${listName}`
+        }
+    }
+
+    response.elberResponse = fulfillmentText
+    return response
+}
+
 const processIntent = async(intentsConfig, intent, parameters, response, email, fulfillmentText) => {
+    let listName = ""
+    let listItems = ""
+
     switch (intent) {
         case intentsConfig.lists.getLists :
             response = await getLists(email, response, fulfillmentText)
@@ -84,6 +111,10 @@ const processIntent = async(intentsConfig, intent, parameters, response, email, 
             listName = await processParameters.getListName(parameters)
             listItems = await processParameters.getListItem(parameters)
             response = await addItem(listName, listItems, email, response, fulfillmentText)
+            break;
+        case intentsConfig.lists.listContent :
+            listName = await processParameters.getListName(parameters)
+            response = await getListContent(listName, email, response, fulfillmentText)
             break;
         default:
             response = response
