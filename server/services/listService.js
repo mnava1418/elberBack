@@ -5,6 +5,8 @@ const createList = async(list, email) => {
     let result = {}
     list.email = email
     list.name = utilityService.toCamelCase(list.name)
+    list.name = list.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
     list.listId = email+list.name
     const existingList = await listBean.getListByName(list.name, list.email)
 
@@ -37,6 +39,7 @@ const getLists = async(email) => {
 
 const getListbyName = async(name, email) => {
     name = utilityService.toCamelCase(name)
+    name = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     let result = {}
     result.status = 200
     let existingList = await listBean.getListByName(name, email)
@@ -52,6 +55,7 @@ const getListbyName = async(name, email) => {
 
 const updateListItems = async(name, email, items) => {
     name = utilityService.toCamelCase(name)
+    name = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     let result = {}
     let existingList = await listBean.getListByName(name, email)
 
@@ -76,6 +80,7 @@ const updateListItems = async(name, email, items) => {
 
 const deleteList = async(name, email) => {
     name = utilityService.toCamelCase(name)
+    name = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     await listBean.deleteList(name, email)
     let result = await getLists(email)
     return result

@@ -4,6 +4,7 @@ const sessionId = uuid.v4();
 const intents = require('./intents')
 
 const callIntent = async (email, message) => {
+  message = message.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   const sessionClient = new dialogFlow.SessionsClient();
   const sessionPath = sessionClient.sessionPath("elber-fiymle", sessionId);
 
