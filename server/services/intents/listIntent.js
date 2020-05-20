@@ -86,9 +86,13 @@ const removeItem = async(listName, listItem, email, response, fulfillmentText) =
                     newItems.push(element)
                 }
             }
-            
-            await listService.updateListItems(listName, email, newItems)
-            fulfillmentText = `Listo! He eliminado ${listItem} de tu lista ${listName}`
+
+            if(currentItems.length == newItems.length){
+                fulfillmentText = `Changos! No encontré ${listItem} en tu lista ${listName}`
+            } else {
+                await listService.updateListItems(listName, email, newItems)
+                fulfillmentText = `Listo! He eliminado ${listItem} de tu lista ${listName}`
+            }
         }
     }
 
