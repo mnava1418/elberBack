@@ -66,6 +66,36 @@ const addItem = async(listName, listItem, email, response, fulfillmentText) => {
     return response
 }
 
+const removeItem = async(listName, listItem, email, response, fulfillmentText) => {
+    if(listName.trim() != "" && listItem.trim() != "") {
+        let result = await listService.getListbyName(listName, email)
+        existingList = result.json.list
+        if(existingList == undefined){
+            fulfillmentText = `La lista ${listName} no existe. Quieres crearla?`
+            response.nextAction = `Crea una lista de ${listName}`
+        } else{
+            let currentItems = existingList.items
+            let tempItem = listItem.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            let newItems = []
+            
+            for(let i = 0; i < currentItems.length; i++){
+                let element = currentItems[i]
+                let tempElement = element.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+                if(tempElement.trim().toLowerCase() != tempItem.trim().toLowerCase()){
+                    newItems.push(element)
+                }
+            }
+            
+            await listService.updateListItems(listName, email, newItems)
+            fulfillmentText = `Listo! He eliminado ${listItem} de tu lista ${listName}`
+        }
+    }
+
+    response.elberResponse = fulfillmentText
+    return response
+}
+
 const getListContent = async(listName, email, response, fulfillmentText) => {
     if(listName.trim() != "") {
         const result = await listService.getListbyName(listName, email)
@@ -116,6 +146,10 @@ const processIntent = async(intentsConfig, intent, parameters, response, email, 
             listName = await processParameters.getListName(parameters)
             response = await getListContent(listName, email, response, fulfillmentText)
             break;
+        case intentsConfig.lists.removeItem :
+            listName = await processParameters.getListName(parameters)
+            listItems = await processParameters.getListItem(parameters)
+            response = await removeItem(listName, listItems, email, response, fulfillmentText)
         default:
             response = response
             break;
