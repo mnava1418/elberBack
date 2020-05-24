@@ -19,10 +19,8 @@ const getLists = async(email, response, fulfillmentText) => {
     return response
 }
 
-const createList = async(listName, listItem, email, fulfillmentText) => {
-    if(listName.trim() == "") {
-        return fulfillmentText
-    } else {
+const createList = async(listName, listItem, email, response, fulfillmentText) => {
+    if(listName.trim() != "") {
         const list = {name: listName, items: []}
 
         if(listItem.trim() != "") {
@@ -36,9 +34,10 @@ const createList = async(listName, listItem, email, fulfillmentText) => {
             fulfillmentText = `${fulfillmentText} Quieres que le metamos algo?`
             response.nextAction = `agrega a lista ${listName}`
         }
-        
-        return fulfillmentText
     }
+
+    response.elberResponse = fulfillmentText
+    return response
 }
 
 const deleteList = async(listName, email, fulfillmentText) => {
@@ -155,7 +154,7 @@ const processIntent = async(intentsConfig, intent, parameters, response, email, 
         case intentsConfig.lists.createList :
             listName = await processParameters.getListName(parameters)
             listItems = await processParameters.getListItem(parameters)
-            response.elberResponse = await createList(listName, listItems, email, fulfillmentText)
+            response = await createList(listName, listItems, email, response, fulfillmentText)
             break;
         case intentsConfig.lists.deleteList :
             listName = await processParameters.getListName(parameters)
