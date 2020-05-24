@@ -7,9 +7,9 @@ const getLists = async(email, response, fulfillmentText) => {
     
     if(currentLists.length > 0 ) {
         for(let i = 0; i < currentLists.length; i++){
-            fulfillmentText = `${fulfillmentText} ${currentLists[i].name},`
+            fulfillmentText = `${fulfillmentText} ${currentLists[i].name}, `
         }
-        fulfillmentText = fulfillmentText.substr(0, fulfillmentText.length - 1)
+        fulfillmentText = fulfillmentText.substr(0, fulfillmentText.length - 2)
     } else {
         fulfillmentText = 'Aún no tienes listas pero puedo ayudarte a crear una. Quieres crear una lista?'
         response.nextAction = "Crea una lista"
@@ -128,6 +128,7 @@ const getListContent = async(listName, email, response, fulfillmentText) => {
             const currentItems = currentList.items
             if(currentItems.length > 0) {
                 fulfillmentText = `Tu lista ${listName} contiene: ${currentItems.toString()}`
+                fulfillmentText = fulfillmentText.replace(',', ', ')
             } else {
                 fulfillmentText = `Tu lista ${listName} está vacía. Quieres que agregue algo?`
                 response.nextAction = `agrega a lista ${listName}`
