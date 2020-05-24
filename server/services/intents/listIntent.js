@@ -58,7 +58,8 @@ const addItem = async(listName, listItem, email, response, fulfillmentText) => {
             let currentItems = existingList.items
             currentItems.push(listItem)
             await listService.updateListItems(listName, email, currentItems)
-            fulfillmentText = `Listo! He agregado ${listItem} en tu lista de ${listName}`
+            fulfillmentText = `Listo! He agregado ${listItem} en tu lista de ${listName}. Quieres agregar algo más en esta lista?`
+            response.nextAction = `agrega a lista ${listName}`
         }
     }
 
