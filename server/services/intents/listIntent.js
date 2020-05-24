@@ -100,6 +100,22 @@ const removeItem = async(listName, listItem, email, response, fulfillmentText) =
     return response
 }
 
+const emptyList = async(listName, email, response, fulfillmentText) => {
+    if(listName.trim() != ""){
+        let result = await listService.getListbyName(listName, email)
+        existingList = result.json.list
+        if(existingList == undefined){
+            fulfillmentText = `La lista ${listName} no existe. Quieres crearla?`
+            response.nextAction = `Crea una lista de ${listName}`
+        } else{
+            await listService.updateListItems(listName, email, [])
+        }
+    }
+
+    response.elberResponse = fulfillmentText
+    return response
+}
+
 const getListContent = async(listName, email, response, fulfillmentText) => {
     if(listName.trim() != "") {
         const result = await listService.getListbyName(listName, email)
@@ -154,6 +170,11 @@ const processIntent = async(intentsConfig, intent, parameters, response, email, 
             listName = await processParameters.getListName(parameters)
             listItems = await processParameters.getListItem(parameters)
             response = await removeItem(listName, listItems, email, response, fulfillmentText)
+            break;
+        case intentsConfig.lists.clearList:
+            listName = await processParameters.getListName(parameters)
+            response = await emptyList(listName, email, response, fulfillmentText)
+            break;
         default:
             response = response
             break;

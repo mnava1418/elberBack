@@ -11,7 +11,8 @@ module.exports = {
         deleteList: 'lists.delete',
         addItems: 'lists.additems',
         listContent: 'lists.getlistcontent',
-        removeItem: 'lists.removeitem'
+        removeItem: 'lists.removeitem',
+        clearList: 'lists.clearlist'
     },
     fallback: {
         id: 'fallback'
