@@ -32,8 +32,11 @@ const createList = async(listName, listItem, email, fulfillmentText) => {
 
         if(result.json.errMessage != undefined){
             fulfillmentText = result.json.errMessage
+        } else {
+            fulfillmentText = `${fulfillmentText} Quieres que le metamos algo?`
+            response.nextAction = `agrega a lista ${listName}`
         }
-
+        
         return fulfillmentText
     }
 }
