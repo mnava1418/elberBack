@@ -26,6 +26,7 @@ const callIntent = async (email, message) => {
   const query = result.queryText
   const response = await intents.getResponse(email, intent, parameters, fulfillmentText, query)
 
+  console.log(`Intent: ${intent}`);
   console.log(` Query: ${query}`);
   console.log(` Response: ${response.elberResponse}`);
   console.log(` Next Action: ${response.nextAction}`);
