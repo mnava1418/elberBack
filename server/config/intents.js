@@ -14,10 +14,17 @@ module.exports = {
         removeItem: 'lists.removeitem',
         clearList: 'lists.clearlist'
     },
+    spotify: {
+        id: 'spotify',
+        play: 'spotify.play',
+        pause: 'spotify.pause'
+    },
     fallback: {
         id: 'fallback'
     },
     localFunctions: {
-        internetSearch: 'internetSearch'
+        internetSearch: 'internetSearch',
+        playMusic: 'playMusic',
+        pauseMusic: 'pauseMusic'
     }
 }

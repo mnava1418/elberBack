@@ -1,6 +1,7 @@
 const intentsConfig = require('../../config/intents')
 const listIntent = require('./listIntent')
 const dateIntent = require('./dateIntent')
+const spotifyIntent = require('./spotifyIntent')
 const fallbackIntent = require('./falbackIntent')
 
 const getResponse = async(email, intent, parameters, fulfillmentText, query) => {
@@ -15,6 +16,9 @@ const getResponse = async(email, intent, parameters, fulfillmentText, query) => 
         case intentsConfig.lists.id :
             response = await listIntent.processIntent(intentsConfig, intent, parameters, response, email, fulfillmentText)
             break
+        case intentsConfig.spotify.id :
+            response = await spotifyIntent.processIntent(intentsConfig, intent, response)
+            break;
         case intentsConfig.fallback.id : 
             response = await fallbackIntent.processIntent(intentsConfig, response, fulfillmentText, query)
             break
