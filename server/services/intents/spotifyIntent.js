@@ -7,6 +7,9 @@ const processIntent = (intentsConfig, intent, response) => {
         case intentsConfig.spotify.pause :
             response.localFunction = intentsConfig.localFunctions.pauseMusic
             break;
+        case intentsConfig.spotify.next :
+            response.localFunction = intentsConfig.localFunctions.nextSong
+            break;
         default:
             response = response
             break;

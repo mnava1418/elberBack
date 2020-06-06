@@ -17,7 +17,8 @@ module.exports = {
     spotify: {
         id: 'spotify',
         play: 'spotify.play',
-        pause: 'spotify.pause'
+        pause: 'spotify.pause',
+        next: 'spotify.next'
     },
     fallback: {
         id: 'fallback'
@@ -25,6 +26,7 @@ module.exports = {
     localFunctions: {
         internetSearch: 'internetSearch',
         playMusic: 'playMusic',
-        pauseMusic: 'pauseMusic'
+        pauseMusic: 'pauseMusic',
+        nextSong: 'nextSong',
     }
 }
