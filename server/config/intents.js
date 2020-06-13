@@ -18,7 +18,8 @@ module.exports = {
         id: 'spotify',
         play: 'spotify.play',
         pause: 'spotify.pause',
-        next: 'spotify.next'
+        next: 'spotify.next',
+        search: 'spotify.search'
     },
     fallback: {
         id: 'fallback'

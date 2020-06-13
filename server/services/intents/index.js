@@ -17,7 +17,7 @@ const getResponse = async(email, intent, parameters, fulfillmentText, query) => 
             response = await listIntent.processIntent(intentsConfig, intent, parameters, response, email, fulfillmentText)
             break
         case intentsConfig.spotify.id :
-            response = await spotifyIntent.processIntent(intentsConfig, intent, response)
+            response = await spotifyIntent.processIntent(intentsConfig, intent, response, parameters)
             break;
         case intentsConfig.fallback.id : 
             response = await fallbackIntent.processIntent(intentsConfig, response, fulfillmentText, query)

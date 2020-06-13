@@ -33,8 +33,22 @@ const getListItem = (parameters) => {
     return listItem = listItem.trim()
 }
 
+const getAny = (parameters) => {
+    let anyItem = parameters.any
+    anyItem = anyItem[anyItem.kind]
+    return anyItem.trim()
+}
+
+const getSpotifyArtist = (parameters) => {
+    let artistItem = parameters['music-artist']
+    artistItem = artistItem[artistItem.kind]
+    return artistItem.trim()
+}
+
 module.exports = {
     getLocation,
     getListName,
-    getListItem
+    getListItem,
+    getAny,
+    getSpotifyArtist
 }
