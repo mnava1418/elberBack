@@ -15,5 +15,9 @@ module.exports = {
     mail: {
         user: process.env.MAIL_FROM,
         password: process.env.MAIL_PASSWORD,
+    },
+    spotify: {
+        clientId: process.env.SPOTIFY_CLIENT_ID,
+        clientSecret: process.env.SPOTIFY_CLIENT_SECRET
     }
 }
