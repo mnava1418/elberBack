@@ -9,7 +9,7 @@ const socketIOLoader = require('../loaders/socketIOLoader');
 
 var server = undefined;
 const env = app.get('env');
-
+console.log(env)
 
 async function startServer () {
   const port = normalizePort(process.env.PORT || '3000');

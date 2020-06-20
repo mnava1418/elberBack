@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node-dev ./server/bin/www --exec babel-node -e js"
+    "test": "node-dev ./server/bin/www --exec babel-node -e js",
+    "start": "pm2 start ./server/bin/www",
+    "stop": "pm2 stop 0"
   },
   "dependencies": {
     "bcrypt": "^4.0.1",
@@ -26,6 +28,7 @@
     "mongoose": "^5.9.10",
     "morgan": "^1.10.0",
     "nodemailer": "^6.4.6",
+    "pm2": "^4.4.0",
     "pug": "^2.0.4",
     "socket.io": "^2.3.0",
     "translate": "^1.1.2",

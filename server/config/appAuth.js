@@ -10,6 +10,9 @@ module.exports = {
     mongoDB: {
         development: {
             dbURL: process.env.MONGO_DEV,
+        },
+        production: {
+            dbURL: process.env.MONGO_PROD
         }
     },
     mail: {
