@@ -10,7 +10,6 @@ const restCall = (host, path, method, headers, body) => {
         }
 
         const req = https.request(options, function(res){
-            console.log(res.statusCode);
             res.setEncoding('utf8');
             let resBody = ''
             
