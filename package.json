@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "test": "node-dev ./server/bin/www --exec babel-node -e js",
+    "test": "node ./server/bin/www --exec babel-node -e js",
     "start": "pm2 start ./server/bin/www",
     "stop": "pm2 stop 0"
   },
