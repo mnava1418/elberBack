@@ -12,7 +12,7 @@ const env = app.get('env');
 console.log(env)
 
 async function startServer () {
-  const port = normalizePort(process.env.PORT || '3000');
+  const port = normalizePort(process.env.PORT || '80');
   app.set('port', port);
 
   server = await http.createServer(app);
