@@ -1,9 +1,11 @@
 extends layout
 
 block content
-  div.div-inicio-img
-    img.img-inicio(src="/images/elber.png", alt="")
-  div
-    h1.center-text= error.status
-    h2.center-text= message
-
+ .error-container
+   .error-image
+   .error-title
+     h1= error.status
+   .error-text
+     h3= message
+   .error-btn
+     a.text-uppercase.header-btn(href='/') Inicio
