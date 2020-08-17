@@ -1,13 +1,16 @@
 #!/usr/bin/env node
 
 const debug = require('debug')('elber:server');
+const fs = require('fs');
 const http = require('http');
+const https = require('https');
 const mongoose = require('mongoose');
 const app = require('../app');
 const mongooseLoader = require('../loaders/mongooseLoader');
 const socketIOLoader = require('../loaders/socketIOLoader');
 
-var server = undefined;
+var httpServer = undefined;
+var httpsServer = undefined
 const env = app.get('env');
 console.log(env)
 
@@ -15,22 +18,59 @@ async function startServer () {
   const port = normalizePort(process.env.PORT || '80');
   app.set('port', port);
 
-  server = await http.createServer(app);
-  server.listen(port, (err) => {
+  //HTTP
+  httpServer = await http.createServer(app);
+  httpServer.listen(port, (err) => {
     if (err) {
       console.log(err);
       return;
     }
     console.log(`Server listening on port: ${port}...`);
     //Moongose Loader
-    mongooseLoader(env);
+    //mongooseLoader(env);
 
     //SocketIO Loader
-    socketIOLoader(server);
+    //socketIOLoader(server);
   });
 
-  server.on('error', onError);
-  server.on('listening', onListening);
+  httpServer.on('error', onError);
+  httpServer.on('listening', onListening(server));
+  //End HTTP
+
+
+  //HTTPS
+
+  // Certificate
+  const privateKey = fs.readFileSync('/etc/letsencrypt/live/elberdrops.com/privkey.pem', 'utf8');
+  const certificate = fs.readFileSync('/etc/letsencrypt/live/elberdrops.com/cert.pem', 'utf8');
+  const ca = fs.readFileSync('/etc/letsencrypt/live/elberdrops.com/chain.pem', 'utf8');
+
+  const credentials = {
+    key: privateKey,
+    cert: certificate,
+    ca: ca
+  };
+
+  httpsServer = await https.createServer(credentials, app)
+  httpsServer.listen(443, (err) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log(`Server listening on port: ${port}...`);
+    //Moongose Loader
+    //mongooseLoader(env);
+
+    //SocketIO Loader
+    //socketIOLoader(server);
+  });
+
+  httpsServer.on('error', onError);
+  httpsServer.on('listening', onListening(httpsServer));
+
+  //End HTTPS
+
+
 }
 
 //Normalize a port into a number, string, or false.
@@ -48,7 +88,7 @@ function normalizePort(val) {
   return false;
 }
 
-//Event listener for HTTP server "error" event.
+//Event listener for HTTP/HTTPS server "error" event.
 function onError(error) {
   if (error.syscall !== 'listen') {
   throw error;
@@ -72,9 +112,10 @@ function onError(error) {
       throw error;
   }
 }
-//Event listener for HTTP server "listening" event.
- function onListening() {
-  var addr = server.address();
+
+//Event listener for HTTP/HTTPS server "listening" event.
+ function onListening( currServer) {
+  var addr = currServer.address();
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
