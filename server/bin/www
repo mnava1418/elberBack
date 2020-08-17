@@ -34,7 +34,7 @@ async function startServer () {
   });
 
   httpServer.on('error', onError);
-  httpServer.on('listening', onListening(httpServer));
+  httpServer.on('listening', onListening);
   //End HTTP
 
 
@@ -66,7 +66,7 @@ async function startServer () {
   });
 
   httpsServer.on('error', onError);
-  httpsServer.on('listening', onListening(httpsServer));
+  httpsServer.on('listening', onListening);
 
   //End HTTPS
 
@@ -114,12 +114,12 @@ function onError(error) {
 }
 
 //Event listener for HTTP/HTTPS server "listening" event.
- function onListening( currServer) {
-  var addr = currServer.address();
+ function onListening() {
+  /*var addr = currServer.address();
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+    : 'port ' + addr.port;*/
+  debug('Listening on ' /*+ bind*/);
 }
 
 process.on('SIGINT', async () => {
