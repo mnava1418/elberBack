@@ -57,7 +57,7 @@ async function startServer () {
       console.log(err);
       return;
     }
-    console.log(`Server listening on port: ${port}...`);
+    console.log(`Server listening on port: 443...`);
     //Moongose Loader
     //mongooseLoader(env);
 
