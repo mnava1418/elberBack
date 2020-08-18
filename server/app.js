@@ -29,6 +29,11 @@ app.use(cookieParser());
 app.use(express.static('public'));
 app.use(limiter);
 
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  next()
+})
+
 //app routes
 app.use('/', indexRouter());
 

@@ -38,6 +38,11 @@ const recoverPassword = async (req, res) => {
 
 const login = async (req, res) => {
     const currentUser = new UserForm(req.body);
+
+    if(req.headers.isweb == 1) {
+        currentUser.setPassword(userService.saltPassword(currentUser))
+    }
+
     const result = await userService.login(currentUser);
 
     res.status(result.status).json(result.json);
