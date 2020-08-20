@@ -26,11 +26,6 @@ async function startServer () {
       return;
     }
     console.log(`Server listening on port: ${port}...`);
-    //Moongose Loader
-    mongooseLoader(env);
-
-    //SocketIO Loader
-    socketIOLoader(httpServer);
   });
 
   httpServer.on('error', onError);
