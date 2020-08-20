@@ -1,4 +1,3 @@
-
 (function ($) {
     "use strict";
 
@@ -21,7 +20,7 @@
     [ Validate ]*/
     var input = $('.validate-input .input100');
 
-    $('.validate-form').on('submit',function(){
+    $('.login100-form-btn').on('click',function(){
         var check = true;
 
         for(var i=0; i<input.length; i++) {
@@ -31,7 +30,9 @@
             }
         }
 
-        return check;
+        if(check) {
+            login()
+        }
     });
 
 
@@ -87,3 +88,23 @@
 
 
 })(jQuery);
+
+const login = () => {
+    const loginAPI = '/user/login'
+    const email = document.getElementById('user-email').value
+    const password = document.getElementById('user-password').value
+    const headers = new Headers();
+    headers.append('source', 'mx.com.mnava.Elber')
+    headers.append('Content-Type', 'application/json')
+    headers.append('isweb', 1)
+    
+    const body = {email: email, password: password}
+    const params = {method: 'POST', headers: headers, body: JSON.stringify(body)}
+    const login = fetch(loginAPI, params)
+
+    login.then(res => {
+        console.log(res)
+    }).catch(err => {
+        console.log(err)
+    })
+}

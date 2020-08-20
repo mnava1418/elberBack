@@ -84,7 +84,7 @@ const getTZInfo = async (country, city) => {
 const filterByKey = (tzInfo, key, element) => {
     let finalList = []
     
-    for(i = 0; i < tzInfo.length; i++) {
+    for(let i = 0; i < tzInfo.length; i++) {
         let current = tzInfo[i]
         let value = current[key].trim().toUpperCase()
 
@@ -99,7 +99,7 @@ const filterByKey = (tzInfo, key, element) => {
 const getMaxPop = (tzInfo) => {
     let maxPop = tzInfo[0]
 
-    for(i = 0; i < tzInfo.length; i++){
+    for(let i = 0; i < tzInfo.length; i++){
         let current = tzInfo[i]
         if(current.pop > maxPop.pop){
             maxPop = current
@@ -113,7 +113,7 @@ const getCapital = (country) => {
     country = country.normalize("NFD").replace(/[\u0300-\u036f]/g, "");  
     let countriesArr = Object.entries(countries)
 
-    for(i = 0; i < countriesArr.length; i++){
+    for(let i = 0; i < countriesArr.length; i++){
         let current = countriesArr[i][1]
         let name = current.name.trim().toUpperCase()
         let capital = current.capital.trim().toUpperCase()

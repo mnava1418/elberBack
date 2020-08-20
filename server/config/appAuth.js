@@ -5,7 +5,8 @@ module.exports = {
     app: {
         iosName: process.env.IOS_APP_NAME,
         jwtPwd: process.env.JWT_PWD,
-        yandexKey: process.env.YANDEX_API_KEY
+        yandexKey: process.env.YANDEX_API_KEY,
+        googleAPIKey: process.env.GOOGLE_APPLICATION_CREDENTIALS
     },
     mongoDB: {
         development: {

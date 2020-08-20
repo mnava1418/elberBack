@@ -6,9 +6,13 @@ const router = express.Router();
 
 
 module.exports = () =>{
-  router.get('/', function(req, res, next) {
+  router.get('/', (req, res, next) => {
     res.render('index');
   });  
+
+  router.get('/login', (req, res, next) => {
+    res.render('login')
+  })
 
   router.use('/user', userRouter())
   router.use('/skills', skillsRouter())

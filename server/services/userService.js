@@ -5,6 +5,16 @@ const appAuth = require("../config/appAuth")
 const userBean = require('../beans/userBean')
 const utilityService = require('./utilityService')
 var pwdGenerator = require('generate-password');
+const UserForm = require('../models/elber/userForm');
+
+const saltPassword = (currentUser) => {
+    const email = currentUser.getEmail()
+    const emailArr = email.split('@')
+    const startSalt = emailArr[0].replace(' ', '')
+    const endSalt = startSalt.length
+    const newPassword = `${startSalt}${currentUser.getPassword()}${endSalt}`
+    return newPassword
+}
 
 const activateUser = async (existingUser) => {
     if(!existingUser.isActive){
@@ -159,5 +169,6 @@ module.exports =  {
     login, 
     faceBookLogin,
     changePassword,
-    recoverPassword
+    recoverPassword,
+    saltPassword
 }

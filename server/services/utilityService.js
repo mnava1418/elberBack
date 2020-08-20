@@ -1,10 +1,12 @@
 const crypto = require('crypto');
-const translate = require('translate')
+const {Translate} = require('@google-cloud/translate').v2;
 const jwt = require('jsonwebtoken')
 const appAuth = require('../config/appAuth');
 const config = require('../config/index');
 const mailService = require('./mailService');
 
+// Creates a client for Google Translate
+const translate = new Translate();
 
 const validateSourceApp = (source) => {
     if( source === appAuth.app.iosName) {
@@ -62,18 +64,16 @@ const saltPassword = (email, currentPassword) => {
 }
 
 const translateText = async (text, from, to) => {
-    translate.engine = 'yandex'
-    translate.key = appAuth.app.yandexKey
-
-    const result = await translate(text, {from: from, to: to})
-    return result
+    let translations = await translate.translate(text, to);
+    translations = Array.isArray(translations) ? translations : [translations];
+    return translations[0];
 }
 
 const toCamelCase = (text) => {
     let finalText = ''
     let arr = text.split(" ")
 
-    for(i = 0; i < arr.length; i++){
+    for(let i = 0; i < arr.length; i++){
         let word = arr[i]
         finalText = `${finalText}${word.charAt(0).toUpperCase()}${word.slice(1).toLowerCase()} `
     }

@@ -26,7 +26,8 @@ const getResponse = async(email, intent, parameters, fulfillmentText, query) => 
             response.elberResponse = fulfillmentText
             break;
         }
-    } catch {
+    } catch(err) {
+        console.log(err)
         response.elberResponse = "No se que quieres"
     }
     return response
