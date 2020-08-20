@@ -3,11 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "test": "node ./server/bin/www --exec babel-node -e js",
+    "test": "nodemon ./server/bin/www --exec babel-node -e js",
     "start": "pm2 start ./server/bin/www",
     "stop": "pm2 stop 0"
   },
   "dependencies": {
+    "@google-cloud/translate": "^6.0.2",
     "bcrypt": "^4.0.1",
     "city-timezones": "^1.2.0",
     "cookie-parser": "^1.4.5",
