@@ -48,6 +48,7 @@ async function startServer () {
     ca: ca
   };
 
+  app.set('port', 443);
   httpsServer = await https.createServer(credentials, app)
   httpsServer.listen(443, (err) => {
     if (err) {
