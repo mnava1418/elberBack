@@ -5,7 +5,6 @@ const appAuth = require("../config/appAuth")
 const userBean = require('../beans/userBean')
 const utilityService = require('./utilityService')
 var pwdGenerator = require('generate-password');
-const UserForm = require('../models/elber/userForm');
 
 const saltPassword = (currentUser) => {
     const email = currentUser.getEmail()
