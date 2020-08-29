@@ -30,19 +30,40 @@ const validateJWT = (currentJWT) => {
 }
 
 const sendRecoverPwdEmail = (email, pwd) => {
-    const recoverPwdMessage = config.mail.messages.recoverPwd;
-    let message = recoverPwdMessage.saludo + recoverPwdMessage.mensaje + pwd + recoverPwdMessage.footer;
-    mailService.sendMail(email, recoverPwdMessage.subject, message);
+    const message = `
+    <div style="background-color: #f9f9ff; width: 100%; margin: 0 auto;">
+        <br><br><br>
+        <img src="https://elberdrops.com/images/logo.png" alt="Elber Drops" style="display: block; margin-left: auto; margin-right: auto; width: 100px">
+        <br>
+        <p style="text-align: center; font-family: Arial, Helvetica, sans-serif; color: #000000; font-size: 1em;">Atención!
+            <br><br>
+            Tu password ha sido restablecido. Si tu no lo solicitaste, cámbialo inmediatamente desde tu celular que ya te chingaron.<br><br>Tu nuevo password es: ${pwd}
+            <br><br>Para mayor seguridad, cambia tu password en cuanto inicies sesión.
+            <br><br>
+            <a href="https://elberdrops.com/" target="_blank" style="color: #000000;">Atte. Elber Drops</a>
+        </p>
+        <br><br>
+    </div>`
+
+    mailService.sendMail(email, 'Restablecer Password!', message);
 }
 
 const sendWelcomeEmail = (user) => {
-    const welcomeMessage = config.mail.messages.welcome;
-                       
-    let message = welcomeMessage.saludo + user.name;
-    message += welcomeMessage.mensaje + user.actCode;
-    message += welcomeMessage.footer;
-    
-    mailService.sendMail(user.email, welcomeMessage.subject, message);
+    const message = `
+    <div style="background-color: #f9f9ff; width: 100%; margin: 0 auto;">
+        <br><br><br>
+        <img src="https://elberdrops.com/images/logo.png" alt="Elber Drops" style="display: block; margin-left: auto; margin-right: auto; width: 100px">
+        <br>
+        <p style="text-align: center; font-family: Arial, Helvetica, sans-serif; color: #000000; font-size: 1em;">Hola ${user.name}!
+            <br><br>
+            Gracias por registrarte. Estoy seguro que seremos grandes amigos :) <br><br> Tu código de activación es: ${user.actCode}
+            <br><br>
+            <a href="https://elberdrops.com/" target="_blank" style="color: #000000;">Atte. Elber Drops</a>
+        </p>
+        <br><br>
+    </div>`
+        
+    mailService.sendMail(user.email, 'Bienvenido a Elber!', message);
 }
 
 const generateActivationCode = () => {
