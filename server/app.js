@@ -2,10 +2,9 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const indexRouter = require('./routes');
+const bodyParser = require('body-parser')
 const app = express();
 
 const setMiddlewares = () => {
@@ -17,16 +16,10 @@ const setMiddlewares = () => {
 
   //app middlewares
   app.use(limiter);
-  app.use(helmet());
-  app.use(logger('dev'));
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: false }));
+  app.use(bodyParser.urlencoded({ extended: false }))
+  app.use(bodyParser.json())
   app.use(cookieParser());
   app.use(express.static('public'));
-  app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    next()
-  })
 }
 
 const setViews = () => {
