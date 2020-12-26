@@ -1,62 +1,27 @@
 #!/usr/bin/env node
 
-const debug = require('debug')('elber:server');
-const fs = require('fs');
 const http = require('http');
-const https = require('https');
-const express = require('express')
-const mongoose = require('mongoose');
 const app = require('../app');
-const mongooseLoader = require('../loaders/mongooseLoader');
 const socketIOLoader = require('../loaders/socketIOLoader');
 
 const env = app.get('env');
 console.log(env)
 
-const startHttpServer = async () => {
-  const httpApp = express()
-  httpApp.get('*', (req, res) => {
-    res.redirect(`https://${req.headers.host}${req.url}`)
-  })
-  
-  const httpServer = await http.createServer(httpApp)
-  httpServer.listen(80, (err) => {
-    if(err) {
-      console.log(err)
-    } else {
-      console.log('Http Server listening on port: 80')
-    }
-  })
-}
-
-const startHttpsServer = async () => {
-  // Certificate
-  const privateKey = fs.readFileSync('/etc/letsencrypt/live/elberdrops.com/privkey.pem', 'utf8');
-  const certificate = fs.readFileSync('/etc/letsencrypt/live/elberdrops.com/cert.pem', 'utf8');
-  const ca = fs.readFileSync('/etc/letsencrypt/live/elberdrops.com/chain.pem', 'utf8');
-
-  const credentials = {
-    key: privateKey,
-    cert: certificate,
-    ca: ca
-  };
-
+const startServer = async () => {
   app.set('port', port);
-  const httpsServer = await https.createServer(credentials, app)
-  httpsServer.listen(port, (err) => {
+  const server = await http.createServer(app)
+  server.listen(port, (err) => {
     if (err) {
       console.log(err);
       return;
     }
-    console.log(`Https Server listening on port: ${port}...`);
-    //Moongose Loader
-    mongooseLoader(env);
-
+    console.log(`Server listening on port: ${port}...`);
+    
     //SocketIO Loader
-    socketIOLoader(httpsServer);
+    socketIOLoader(server);
   });
 
-  httpsServer.on('error', onError);
+  server.on('error', onError);
 }
 
 //Normalize a port into a number, string, or false.
@@ -77,7 +42,7 @@ const normalizePort = (val) => {
 //Event listener for HTTPS server "error" event.
 const onError = (error) => {
   if (error.syscall !== 'listen') {
-  throw error;
+    throw error;
   }
 
   // handle specific listen errors with friendly messages
@@ -95,18 +60,5 @@ const onError = (error) => {
   }
 }
 
-process.on('SIGINT', async () => {
-  console.log('Stoping server...');
-  mongoose.disconnect((err) => {
-    if(err) {
-        console.log(err)
-    }else {
-        console.log('Mongo connection closed')
-        process.exit(0);
-    }
-  })
-})
-
-let port = normalizePort(process.env.PORT || '443');
-startHttpServer()
-startHttpsServer();
+let port = normalizePort(process.env.PORT || '3000');
+startServer()
