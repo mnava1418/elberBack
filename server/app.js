@@ -22,12 +22,6 @@ const setMiddlewares = () => {
   app.use(express.static('public'));
 }
 
-const setViews = () => {
-  // view engine setup
-  app.set('views', path.join(__dirname, 'views'));
-  app.set('view engine', 'pug');
-}
-
 const setRoutes = () => {
   //app routes
   app.use('/', indexRouter());
@@ -39,21 +33,12 @@ const setRoutes = () => {
 
   // error handler
   app.use(function(err, req, res, next) {
-    if(err.status == 404 )
-      res.locals.message = 'Oops! Esta página no existe'
-    else
-      res.locals.message = 'Mi papá ya la cagó pero está trabajando en ello';
-    
-    res.locals.error = err;
-
     // render the error page
     res.status(err.status || 500);
-    res.render('error');
+    res.send(err);
   });
 }
 
-app.locals.title = 'Elber';
-setViews();
 setMiddlewares();
 setRoutes();
 module.exports = app;
