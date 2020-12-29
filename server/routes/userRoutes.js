@@ -5,11 +5,6 @@ const utilityController = require('../controllers/utilityController')
 const router = express.Router();
 
 module.exports = () =>{
-  router.post('/register', utilityController.validateSourceApp, userController.register);
-  router.post('/login', utilityController.validateSourceApp, userController.login);
-  router.post('/faceBookLogin', utilityController.validateSourceApp, userController.faceBookLogin)
-  router.post('/changePassword', utilityController.validateSourceApp, utilityController.validateJWT, userController.changePassword)
-  router.post('/recoverPassword', utilityController.validateSourceApp, userController.recoverPassword)
-
+  router.get('/token', [utilityController.validateSourceApp], userController.getToken)
   return router;
 }
