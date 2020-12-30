@@ -13,9 +13,6 @@ const getResponse = async(email, intent, parameters, fulfillmentText, query) => 
         case intentsConfig.date.id :
             response = await dateIntent.processIntent(intent, parameters, response)
             break;
-        case intentsConfig.lists.id :
-            response = await listIntent.processIntent(intentsConfig, intent, parameters, response, email, fulfillmentText)
-            break
         case intentsConfig.spotify.id :
             response = await spotifyIntent.processIntent(intentsConfig, intent, response, parameters)
             break;
