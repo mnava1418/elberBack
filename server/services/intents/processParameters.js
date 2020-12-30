@@ -1,4 +1,4 @@
-const dateService = require('../dateService')
+const locationService = require('../locationService')
 
 const getLocation = async(parameters) => {
     let city = ""
@@ -16,7 +16,7 @@ const getLocation = async(parameters) => {
     let location = {}
     location.city = city
     location.country = country
-    location = await dateService.translateLocation(location, 'es', 'en')
+    location = await locationService.translateLocation(location, 'es', 'en')
 
     return location
 }
