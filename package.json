@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "test": "nodemon ./server/bin/www --exec babel-node -e js",
-    "start": "npm start ./server/bin/www",
+    "start": "pm2 start ./server/bin/www",
     "stop": "pm2 stop 0"
   },
   "dependencies": {
