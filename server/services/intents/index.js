@@ -1,5 +1,4 @@
 const intentsConfig = require('../../config/intents')
-const listIntent = require('./listIntent')
 const dateIntent = require('./dateIntent')
 const spotifyIntent = require('./spotifyIntent')
 const fallbackIntent = require('./falbackIntent')
