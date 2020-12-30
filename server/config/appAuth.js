@@ -5,20 +5,6 @@ module.exports = {
     app: {
         iosName: process.env.IOS_APP_NAME,
         jwtPwd: process.env.JWT_PWD,
-        yandexKey: process.env.YANDEX_API_KEY,
-        googleAPIKey: process.env.GOOGLE_APPLICATION_CREDENTIALS
-    },
-    mongoDB: {
-        development: {
-            dbURL: process.env.MONGO_DEV,
-        },
-        production: {
-            dbURL: process.env.MONGO_PROD
-        }
-    },
-    mail: {
-        user: process.env.MAIL_FROM,
-        password: process.env.MAIL_PASSWORD,
     },
     spotify: {
         clientId: process.env.SPOTIFY_CLIENT_ID,
