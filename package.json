@@ -17,7 +17,7 @@
     "countries-list": "^2.5.6",
     "crypto": "^1.0.1",
     "debug": "^4.3.1",
-    "dialogflow": "^4.0.3",
+    "dialogflow": "^1.2.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-rate-limit": "^5.2.3",
