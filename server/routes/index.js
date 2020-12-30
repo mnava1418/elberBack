@@ -7,16 +7,10 @@ const router = express.Router();
 
 module.exports = () =>{
   router.get('/', (req, res, next) => {
-    res.render('index');
+    res.status(200).send('Elber is ready!')
   });  
 
-  router.get('/login', (req, res, next) => {
-    res.render('login')
-  })
-
   router.use('/user', userRouter())
-  router.use('/skills', skillsRouter())
-  router.use('/list', listRouter())
   
   return router;
 }
