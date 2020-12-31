@@ -1,11 +1,11 @@
-const dialogFlow = require('dialogflow')
+const dialogFlow = require('@google-cloud/dialogflow')
 const uuid = require('uuid');
 const sessionId = uuid.v4();
 const intents = require('./intents')
 
 const callIntent = async (email, message) => {
   const sessionClient = new dialogFlow.SessionsClient();
-  const sessionPath = sessionClient.sessionPath("elber-fiymle", sessionId);
+  const sessionPath = sessionClient.projectAgentSessionPath("elber-fiymle", sessionId);
 
   const request = {
     session: sessionPath,
