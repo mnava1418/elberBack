@@ -14,8 +14,8 @@ const getLocation = async(parameters) => {
     }
 
     let location = {}
-    location.city = city
-    location.country = country
+    location.city = city.toUpperCase()
+    location.country = country.toUpperCase()
     location = await locationService.translateLocation(location, 'es', 'en')
 
     return location
