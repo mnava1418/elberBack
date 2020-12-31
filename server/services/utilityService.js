@@ -27,9 +27,24 @@ const validateJWT = (currentJWT) => {
 }
 
 const translateText = async (text, from, to) => {
-    let translations = await translate.translate(text, to);
+    let [translations] = await translate.translate(text, to);
     translations = Array.isArray(translations) ? translations : [translations];
-    return translations[0];
+    
+    let finalTranslation = ""
+
+    for(translation of translations) {
+        finalTranslation = `${finalTranslation} ${translation}`
+    }
+
+    if(finalTranslation.trim().length > 2 || finalTranslation.trim() == '') {
+        return [finalTranslation.trim()]
+    }
+    
+    translations = translations.filter( element => element != finalTranslation.trim())
+    
+    let result = await translateText(text.split(" "), from, to)
+    translations = translations.concat(result)
+    return translations
 }
 
 const toCamelCase = (text) => {

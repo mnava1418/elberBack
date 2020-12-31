@@ -3,9 +3,13 @@ const citiesTZ = require('city-timezones')
 const utilityServices = require('./utilityService')
 
 const translateLocation = async(location, from, to) => {
-    let city = await utilityServices.translateText(location.city, from, to)
+    let cities = await utilityServices.translateText(location.city, from, to)
+    cities.push(location.city)
+
     let country = await utilityServices.translateText(location.country, from, to)
-    let result = {city, country}
+    country = country[0]
+    
+    let result = {cities, country}
     return result
 }
 
