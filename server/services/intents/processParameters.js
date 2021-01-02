@@ -21,34 +21,18 @@ const getLocation = async(parameters) => {
     return location
 }
 
-const getListName = (parameters) => {
-    const listType = parameters.listType
-    const listName = listType[listType.kind]
-    return listName.trim()
-}
-
-const getListItem = (parameters) => {
-    let listItem = parameters.any
-    listItem = listItem[listItem.kind]
-    return listItem = listItem.trim()
-}
-
 const getAny = (parameters) => {
-    let anyItem = parameters.any
-    anyItem = anyItem[anyItem.kind]
-    return anyItem.trim()
+    return getCustomParameter(parameters, 'any')
 }
 
-const getSpotifyArtist = (parameters) => {
-    let artistItem = parameters['music-artist']
-    artistItem = artistItem[artistItem.kind]
-    return artistItem.trim()
+const getCustomParameter = (parameters, type) => {
+    let item = parameters[type]
+    item = item[item.kind]
+    return item.trim()
 }
 
 module.exports = {
     getLocation,
-    getListName,
-    getListItem,
     getAny,
-    getSpotifyArtist
+    getCustomParameter
 }
