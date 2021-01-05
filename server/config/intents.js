@@ -19,7 +19,8 @@ module.exports = {
         playMusic: 'playMusic',
         pauseMusic: 'pauseMusic',
         nextSong: 'nextSong',
-        setSong: 'setSong'
+        setSong: 'setSong',
+        showCrypto: 'showCrypto'
     },
     cryptos: {
         id: 'crypto',

@@ -1,7 +1,7 @@
 const processParameters = require('./processParameters')
 const cryptoServices = require('../cryptoService')
 
-const getCryptoInfo = async (crypto, from, to, response) => {
+const getCryptoInfo = async (crypto, from, to, response, localFunction) => {
     const cryptoInfo = await cryptoServices.getCurrencyInfo(from, to)
 
     if(cryptoInfo.spot == undefined) {
@@ -9,6 +9,7 @@ const getCryptoInfo = async (crypto, from, to, response) => {
     } else {
         response.elberResponse = response.elberResponse.replace('@crypto', crypto).replace('@price', cryptoInfo.spot)
         response.parameters = cryptoInfo
+        response.localFunction = localFunction
     }
     
     return response
@@ -23,7 +24,7 @@ const processIntent = async (intentsConfig, intent, response, parameters) => {
 
     switch (intent) {
         case intentsConfig.cryptos.info:
-            response = await getCryptoInfo(crypto, intentsConfig.cryptos.tickerMapping[crypto], 'USD', response)
+            response = await getCryptoInfo(crypto, intentsConfig.cryptos.tickerMapping[crypto], 'USD', response, intentsConfig.localFunctions.showCrypto)
             break
         default:
             response = response

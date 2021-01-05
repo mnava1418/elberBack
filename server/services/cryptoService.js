@@ -20,7 +20,7 @@ const getPrice = async (from, to, type) => {
     })
     .catch(err => {
         console.log(err)
-        {}
+        return {}
     })
 
     return result
@@ -31,14 +31,14 @@ const getCurrencyInfo = async (from, to) => {
     const priceTypes = ['spot', 'buy', 'sell']
     let date = new Date()
 
-    for(let i = 0; i < 30; i++) {
+    /*for(let i = 0; i < 30; i++) {
         if(i > 0) {
             date.setDate(date.getDate() - 1);
         }
 
         let finalDate = date.toISOString().split('T')[0]
         calls.push(getPrice(from, to, `spot?date=${finalDate}`))
-    }
+    }*/
 
     const result = await Promise.all(calls)
     let info = {}
@@ -55,6 +55,7 @@ const getCurrencyInfo = async (from, to) => {
     }
 
     info.history = history
+    info.crypto = from
     return info
 }
 
