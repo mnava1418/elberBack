@@ -9,7 +9,7 @@ const getTime = async(location, format) => {
     let cities = location.cities
     let country = location.country
 
-    for(city of cities) {
+    for(let city of cities) {
         if(city == "" && country != ""){
             city = locationService.getCapital(country)
         } 
