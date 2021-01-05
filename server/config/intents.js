@@ -19,6 +19,17 @@ module.exports = {
         playMusic: 'playMusic',
         pauseMusic: 'pauseMusic',
         nextSong: 'nextSong',
-        setSong: 'setSong'
+        setSong: 'setSong',
+        showCrypto: 'showCrypto'
+    },
+    cryptos: {
+        id: 'crypto',
+        info: 'crypto.getinfo',
+        tickerMapping: {
+            bitcoin: 'BTC',
+            ethereum: 'ETH',
+            dai: 'DAI',
+            tusd: 'TUSD',
+        }
     }
 }

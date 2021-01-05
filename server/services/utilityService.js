@@ -32,7 +32,7 @@ const translateText = async (text, from, to) => {
     
     let finalTranslation = ""
 
-    for(translation of translations) {
+    for(let translation of translations) {
         finalTranslation = `${finalTranslation} ${translation}`
     }
 

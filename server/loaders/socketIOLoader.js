@@ -23,7 +23,7 @@ module.exports = (server) => {
 
             if(messageArr.length >= 2 && user != undefined){
                 message = messageArr[1]
-                response = await elberService().callIntent(user.email, message)
+                response = await elberService().callIntent(message)
             }
 
             io.to(`${socket.id}`).emit('elber response', response);
