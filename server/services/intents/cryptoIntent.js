@@ -15,11 +15,11 @@ const getCryptoInfo = async (crypto, from, to, response) => {
 }
 
 const processIntent = async (intentsConfig, intent, response, parameters) => {
-    if(parameters.crypto == undefined) {
+    const crypto = processParameters.getCustomParameter(parameters, 'crypto')
+
+    if(crypto.trim() == '') {
         return response
     }
-
-    const crypto = processParameters.getCustomParameter(parameters, 'crypto')
 
     switch (intent) {
         case intentsConfig.cryptos.info:

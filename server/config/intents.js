@@ -28,7 +28,7 @@ module.exports = {
             bitcoin: 'BTC',
             ethereum: 'ETH',
             dai: 'DAI',
-            trueusd: 'TUSD',
+            tusd: 'TUSD',
         }
     }
 }
