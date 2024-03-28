@@ -3,7 +3,7 @@
 const app = require('../app');
 const debug = require('debug')('user-services:server');
 const http = require('http');
-
+const fireBaseLoader = require('../loaders/firebaseLoader')
 
 const startServer = () => { 
   app.set('port', port);
@@ -12,6 +12,9 @@ const startServer = () => {
   server.listen(port);
   server.on('error', onError);
   server.on('listening', onListening);
+
+  //LOADERS
+  fireBaseLoader()
 }
 
 const normalizePort = (val) => {
@@ -58,5 +61,5 @@ const onListening = () => {
   debug('Listening on ' + port);
 }
 
-const port = normalizePort(process.env.PORT || '4040');
+const port = normalizePort('4040');
 startServer()
