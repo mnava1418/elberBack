@@ -1,0 +1,37 @@
+version: "1.0"
+services:
+  zookeeper:
+    restart: always
+    image: bitnami/zookeeper:latest
+    ports:
+      - "2181:2181"
+    volumes:
+      - "zookeeper-volume:/dot"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    networks:
+      - default
+  kafka:
+    restart: always
+    image: bitnami/kafka:latest
+    ports:
+      - "9093:9093"
+    volumes:
+      - "kafka-volume:/dot"
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=CLIENT://:9092,EXTERNAL://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://kafka:9092,EXTERNAL://localhost:9093
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=CLIENT
+    depends_on:
+      - zookeeper
+    networks:
+      - default
+volumes:
+  kafka-volume:
+  zookeeper-volume:
+networks:
+  default:
