@@ -8,7 +8,7 @@ module.exports = {
     },
 
     kafka: {
-        clientId: 'user-services',
+        clientId: 'dot-kafka',
         brokers: [process.env.KAFKA_HOST],
         topics: {
             email: 'email-events'
