@@ -1,0 +1,16 @@
+{
+  "name": "email-services",
+  "version": "1.0.0",
+  "description": "Service to send emails",
+  "main": "app.js",
+  "scripts": {
+    "start": "node ./src/app.js",
+    "test": "nodemon ./src/app.js"
+  },
+  "author": "Martin Nava",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "kafkajs": "^2.2.4"
+  }
+}
