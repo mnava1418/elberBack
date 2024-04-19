@@ -1,17 +1,19 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "node",
+            "type": "node-terminal",
+            "name": "Run Email Services",
             "request": "launch",
-            "name": "Launch Program",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${file}"
+            "command": "npm run test",
+            "cwd": "${workspaceFolder}/email-services"
+        },
+        {
+            "type": "node-terminal",
+            "name": "Run User Services",
+            "request": "launch",
+            "command": "npm run test",
+            "cwd": "${workspaceFolder}/user-services"
         }
     ]
 }
