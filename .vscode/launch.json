@@ -14,6 +14,20 @@
             "request": "launch",
             "command": "npm run test",
             "cwd": "${workspaceFolder}/user-services"
+        },
+        {
+            "type": "node-terminal",
+            "name": "Run Kafka Services",
+            "request": "launch",
+            "command": "npm run test",
+            "cwd": "${workspaceFolder}/kafka-services"
+        },
+        {
+            "type": "node-terminal",
+            "name": "Run Auth Services",
+            "request": "launch",
+            "command": "npm run test",
+            "cwd": "${workspaceFolder}/auth-services"
         }
     ]
 }
