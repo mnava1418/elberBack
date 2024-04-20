@@ -4,12 +4,16 @@
   "description": "Service to manage kafka messages",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js"
+    "start": "node index.js",
+    "test": "jest"
   },
   "author": "Martin Nava",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.4.5",
     "kafkajs": "^2.2.4"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }

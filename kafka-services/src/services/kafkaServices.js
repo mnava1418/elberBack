@@ -1,16 +1,22 @@
 const { Kafka, Partitioners } = require('kafkajs')
 const auth = require('../config/auth').kafka
 
-const kafka = new Kafka({
-    clientId: auth.clientId,
-    brokers: auth.brokers,
-})
+const getProducer = () => {
+    const myKafka = new Kafka({
+        clientId: auth.clientId,
+        brokers: auth.brokers,
+    })
 
-const producer = kafka.producer({
-    createPartitioner: Partitioners.LegacyPartitioner
-})
+    const producer = myKafka.producer({
+        createPartitioner: Partitioners.LegacyPartitioner
+    })
+
+    return producer
+}
 
 const sendMessage = async(topic, key, message) => {
+    const producer = getProducer()
+    
     await producer.connect()    
     .catch(error => {
         console.error(error)
