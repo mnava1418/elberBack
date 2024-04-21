@@ -36,6 +36,34 @@ const sendMessage = async(topic, key, message) => {
     await producer.disconnect()
 }
 
+const consumeMessagesFromTopic = async(topic, onMessage) => {
+    const kafka = new Kafka({clientId: auth.clientId, brokers: auth.brokers})
+    const consumer = kafka.consumer({groupId: auth.groupId})
+    
+    await consumer.connect()
+    .catch(error => {
+        console.error(error)
+        throw new Error('Unable to connect to kafka')
+    })
+
+    await consumer.subscribe({topic, fromBeginning: false})
+    .catch(error => {
+        console.error(error)
+        throw new Error(`Unable to subscribe to topic ${topic}`)
+    })
+
+    await consumer.run({
+        eachMessage: ({ topic, partition, message}) => {
+            onMessage(message.key.toString(), message.value.toString() )
+        }
+    })
+    .catch(error => {
+        console.error(error)
+        throw new Error('Unable to process message')
+    })
+}
+
 module.exports = {
-    sendMessage
+    sendMessage,
+    consumeMessagesFromTopic
 }
