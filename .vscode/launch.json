@@ -5,28 +5,21 @@
             "type": "node-terminal",
             "name": "Run Email Services",
             "request": "launch",
-            "command": "npm run test",
+            "command": "npm run start",
             "cwd": "${workspaceFolder}/email-services"
-        },
-        {
-            "type": "node-terminal",
-            "name": "Run User Services",
-            "request": "launch",
-            "command": "npm run test",
-            "cwd": "${workspaceFolder}/user-services"
         },
         {
             "type": "node-terminal",
             "name": "Run Kafka Services",
             "request": "launch",
-            "command": "npm run test",
+            "command": "npm run start",
             "cwd": "${workspaceFolder}/kafka-services"
         },
         {
             "type": "node-terminal",
             "name": "Run Auth Services",
             "request": "launch",
-            "command": "npm run test",
+            "command": "npm run start",
             "cwd": "${workspaceFolder}/auth-services"
         }
     ]
