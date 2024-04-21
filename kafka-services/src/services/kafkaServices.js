@@ -52,15 +52,16 @@ const consumeMessagesFromTopic = async(topic, onMessage) => {
         throw new Error(`Unable to subscribe to topic ${topic}`)
     })
 
-    await consumer.run({
-        eachMessage: ({ topic, partition, message}) => {
-            onMessage(message.key.toString(), message.value.toString() )
-        }
-    })
-    .catch(error => {
+    try {
+        await consumer.run({
+            eachMessage: ({ topic, partition, message}) => {
+                onMessage(message.key.toString(), message.value.toString() )
+            }
+        })    
+    } catch (error) {
         console.error(error)
         throw new Error('Unable to process message')
-    })
+    }
 }
 
 module.exports = {
