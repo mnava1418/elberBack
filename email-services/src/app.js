@@ -1,6 +1,6 @@
 const emailService = require('./services/emailService')
 
-const startServer = async () => {
+const startServer = () => {
   emailService.consumeMessages()
   .catch(error => {
     console.error
