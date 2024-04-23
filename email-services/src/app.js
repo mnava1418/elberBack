@@ -1,9 +1,10 @@
-const kafka = require('./services/kafkaService')
+const emailService = require('./services/emailService')
 
 const startServer = () => {
-  kafka.consumeMessages()
+  emailService.consumeMessages()
   .catch(error => {
-    console.log(error)
+    console.error
+    throw new Error(error.message)
   })
 }
 
