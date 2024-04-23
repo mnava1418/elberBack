@@ -5,12 +5,15 @@
   "main": "app.js",
   "scripts": {
     "start": "node ./src/app.js",
-    "test": "nodemon ./src/app.js"
+    "test": "jest"
   },
   "author": "Martin Nava",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.4.5",
     "kafkajs": "^2.2.4"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }

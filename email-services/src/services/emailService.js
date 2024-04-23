@@ -14,7 +14,7 @@ const processMessage = (key, message) => {
 }
 
 const consumeMessages = async() => {
-    consumeMessagesFromTopic(topics.email, processMessage)
+    await consumeMessagesFromTopic(topics.email, processMessage)
     .catch(error => {
         console.error(error)
         throw new Error(error.message)
