@@ -1,13 +1,13 @@
 const {consumeMessagesFromTopic} = require ('kafka-services')
-const { consumeMessages } = require('../src/services/messageService')
-const { requestRegistrationCode } = require('../src/services/userService')
+const { consumeMessages } = require('../../src/services/messageService')
+const { requestRegistrationCode } = require('../../src/services/userService')
 
 jest.mock('kafka-services', () => ({
     consumeMessagesFromTopic: jest.fn(),
     topics: {email: 'email_topic'}
 }))
 
-jest.mock('../src/services/userService', () => ({
+jest.mock('../../src/services/userService', () => ({
     requestRegistrationCode: jest.fn()
 }))
 

@@ -1,26 +1,48 @@
-const {topics, consumeMessagesFromTopic} = require('kafka-services')
-const userService = require('./userService')
+const fs = require('fs')
+const nodemailer = require('nodemailer')
+const { from } = require('../config').email
 
-const processMessage = (key, message) => {
-    switch (key) {
-        case 'request_access':
-            userService.requestRegistrationCode(message)
-            break;
-    
-        default:
-            console.info('Unable to identify message type')
-            break;
-    }
+const createTransporter = () => {
+    const credentials = JSON.parse(fs.readFileSync(process.env.GOOGLE_APPLICATION_CREDENTIALS))
+    const transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+            type: 'OAuth2',
+            user: from,
+            serviceClient: credentials['client_id'],
+            privateKey: credentials['private_key']
+        }        
+    })
+
+    return transporter
 }
 
-const consumeMessages = async() => {
-    await consumeMessagesFromTopic(topics.email, processMessage)
+const sendEmail = async (to, subject, html ) => {
+    const mailOptions = { from, subject, html }
+
+    to = to.split(',')
+
+    if(to.length > 1) {
+        mailOptions.bcc = to
+    } else {
+        mailOptions.to = to[0]
+    }
+    
+    const transporter = createTransporter()
+
+    transporter.sendMail(mailOptions)
+    .then(info => {
+        console.info(`Email sent: ${info.messageId}`)        
+        transporter.close()
+    })
     .catch(error => {
-        console.error(error)
-        throw new Error(error.message)
+        console.error(`Error: ${error}`)  
+        transporter.close()      
     })
 }
 
 module.exports = {
-    consumeMessages
+    sendEmail
 }
