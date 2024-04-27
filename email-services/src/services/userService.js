@@ -1,9 +1,11 @@
 const emailService = require('./emailService')
 const { from } = require('../config').email
+const { requestRegistrationCodeMessage } = require('../config/emailMessages')
 
 const requestRegistrationCode = (message) => {
-    emailService.sendEmail(from, 'NEW - Registration Request', message)
-    console.log('se mando')
+    const messageInfo = JSON.parse(message)
+    const emailMessage = requestRegistrationCodeMessage(messageInfo)
+    emailService.sendEmail(from, 'NEW - Registration Request', emailMessage)
 }
 
 module.exports = {
