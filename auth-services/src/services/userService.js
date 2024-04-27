@@ -20,7 +20,13 @@ const requestRegistrationCode = async(email) => {
 
 const responseRegistrationCode = async (payload) => {
     const {sender, action} = payload
-    await sendMessage(topics.email, 'response_access', JSON.stringify({sender, action}))
+    let resgitrationToken = ''
+
+    if(action === REQUEST_ACCEPT_ACTION) {
+        resgitrationToken = tokenService.generateToken({email: sender}, {expiresIn: '24h'})
+    }
+    
+    await sendMessage(topics.email, 'response_access', JSON.stringify({sender, action, token: resgitrationToken}))
     .catch(error => {
         console.error(error)
         throw new Error(error.message)
