@@ -13,7 +13,27 @@ const getAdminToken = (payload) => {
     return token
 }
 
+const validateToken = (token) => {
+    try {
+        const payload = jwt.verify(token, auth.secret)
+        return payload
+    } catch (error) {
+        console.error(error)
+        return undefined
+    }
+}
+
+const isAdminToken = (tokenPayload) => {
+    if(tokenPayload.isAdmin) {
+        return true
+    } else {
+        return false
+    }
+}
+
 module.exports = {
     generateToken,
-    getAdminToken
+    getAdminToken,
+    validateToken,
+    isAdminToken
 }
