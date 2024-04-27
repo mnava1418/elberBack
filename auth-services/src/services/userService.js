@@ -18,6 +18,16 @@ const requestRegistrationCode = async(email) => {
     })
 }
 
+const responseRegistrationCode = async (payload) => {
+    const {sender, action} = payload
+    await sendMessage(topics.email, 'response_access', JSON.stringify({sender, action}))
+    .catch(error => {
+        console.error(error)
+        throw new Error(error.message)
+    })
+}
+
 module.exports = {
-    requestRegistrationCode
+    requestRegistrationCode,
+    responseRegistrationCode
 }

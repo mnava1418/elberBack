@@ -54,3 +54,43 @@ describe('requestRegistrationCode', () => {
         });
     });
 })
+
+describe('responseRegistrationCode', () => {
+    let mockReq, mockRes, mockStatus, mockJson
+
+    beforeEach(() => {
+        mockJson = jest.fn();
+        mockStatus = jest.fn(() => ({ json: mockJson }));
+
+        mockReq = {
+            tokenPayload: {sender: 'mySender', action: 'myAction'}
+        }
+        
+        mockRes = {
+            status: mockStatus,
+            json: jest.fn()
+        };
+    })
+
+    test('ok', async () => {
+        sendMessage.mockResolvedValue()
+
+        await userController.responseRegistrationCode(mockReq, mockRes)
+
+        expect(mockRes.status).toHaveBeenCalledWith(200);
+        expect(mockRes.status().json).toHaveBeenCalledWith({
+            message: `Hemos enviado tu respuesta a mySender.`
+        })
+    })
+
+    test('error', async () => {
+        sendMessage.mockRejectedValue(new Error('Unable to send message to topic: test-topic'));
+        
+        await userController.responseRegistrationCode(mockReq, mockRes)
+
+        expect(mockRes.status).toHaveBeenCalledWith(500);
+        expect(mockRes.status().json).toHaveBeenCalledWith({
+            error: 'Unable to send message to topic: test-topic'
+        })
+    })
+})
