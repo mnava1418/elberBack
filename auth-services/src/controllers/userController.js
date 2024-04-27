@@ -12,6 +12,19 @@ const requestRegistrationCode = async(req, res) => {
     })
 }
 
+const responseRegistrationCode = async(req, res) => {
+    const tokenPayload = req.tokenPayload
+
+    await userService.responseRegistrationCode(tokenPayload)
+    .then(() => {
+        res.status(200).json({message: `Hemos enviado tu respuesta a ${tokenPayload.sender}.`})
+    })
+    .catch(error => {
+        res.status(500).json({error: error.message})
+    })
+}
+
 module.exports = {
-    requestRegistrationCode
+    requestRegistrationCode,
+    responseRegistrationCode
 }
