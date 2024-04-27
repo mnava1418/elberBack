@@ -8,7 +8,9 @@ const processMessage = (key, message) => {
         case 'request_access':
             userService.requestRegistrationCode(message)
             break;
-    
+        case 'response_access':
+            userService.responseRegistrationCode(message)
+            break;
         default:
             console.info('Unable to identify message type')
             break;

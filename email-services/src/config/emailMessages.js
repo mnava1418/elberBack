@@ -21,6 +21,37 @@ const requestRegistrationCodeMessage = (messageInfo) => {
     return result
 }
 
+const acceptRegistrationCodeMessage = (token, email) => {
+    const result = `
+        <p>
+            Hola ${email}, 
+            <br />
+            <br />
+            Tu solicitud de acceso ha sido aceptada. Aquí tienes tu código de acceso el cual sera válido por 24 horas. Sigue las instrucciones en la app. 
+            <br />
+            <br />
+            ${token}
+        </p>
+    `
+
+    return result
+}
+
+const rejectRegistrationCodeMessage = (email) => {
+    const result = `
+        <p>
+            Hola ${email}, 
+            <br />
+            <br />
+            Tu solicitud de acceso ha sido rechazada. Gracias por tu interes.            
+        </p>
+    `
+
+    return result
+}
+
 module.exports = {
-    requestRegistrationCodeMessage
+    requestRegistrationCodeMessage,
+    acceptRegistrationCodeMessage,
+    rejectRegistrationCodeMessage
 }
