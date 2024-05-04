@@ -30,6 +30,28 @@ services:
       - zookeeper
     networks:
       - default
+  auth-services:
+    build:
+      context: .
+      dockerfile: auth-services/Dockerfile 
+    ports:
+      - "4041:4041"
+    environment:
+      - TEST=TEST
+    depends_on:
+      - kafka
+    networks:
+      - default  
+  email-services:
+    build:
+      context: .
+      dockerfile: email-services/Dockerfile
+    environment:
+      - TEST=TEST
+    depends_on:
+      - kafka
+    networks:
+      - default  
 volumes:
   kafka-volume:
   zookeeper-volume:
