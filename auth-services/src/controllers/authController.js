@@ -2,7 +2,15 @@ const tokenService = require('../services/tokenService')
 
 const validateTokenQuery = (req, res, next) => {
     let token = req.query.token
+    validateToken(req, res, next, token)
+}
 
+const validateTokenHeader = (req, res, next) => {
+    let token = req.headers.token
+    validateToken(req, res, next, token)
+}
+
+const validateToken = (req, res, next, token) => {
     if(!token) {
         res.status(401).json({error: 'Unauthorized user.'})
     } else {
@@ -30,5 +38,6 @@ const isAdminToken = (req, res, next) => {
 
 module.exports = {
     validateTokenQuery,
+    validateTokenHeader,
     isAdminToken
 }
