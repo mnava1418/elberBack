@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const app = require('../app');
+const firebaseLoader = require('../loaders/firebaseLoader')
 const debug = require('debug')('user-services:server');
 const http = require('http');
 
@@ -11,6 +12,9 @@ const startServer = () => {
   server.listen(port);
   server.on('error', onError);
   server.on('listening', onListening);
+
+  //Loaders
+  firebaseLoader()
 }
 
 const normalizePort = (val) => {
