@@ -2,6 +2,7 @@
 const {sign} = require('jsonwebtoken')
 const {sendMessage, topics} = require('kafka-services')
 const userController = require('../../src/controllers/userController')
+const admin = require('firebase-admin')
 
 jest.mock('jsonwebtoken', () => ({
     sign: jest.fn()
@@ -10,6 +11,10 @@ jest.mock('jsonwebtoken', () => ({
 jest.mock('kafka-services', () => ({
     sendMessage: jest.fn(),
     topics: {email: 'test-topic'}
+}))
+
+jest.mock('firebase-admin', () => ({
+    auth: jest.fn()
 }))
 
 describe('requestRegistrationCode', () => {
@@ -91,6 +96,69 @@ describe('responseRegistrationCode', () => {
         expect(mockRes.status).toHaveBeenCalledWith(500);
         expect(mockRes.status().json).toHaveBeenCalledWith({
             error: 'Unable to send message to topic: test-topic'
+        })
+    })
+})
+
+describe('registerUser', () => {
+    let mockReq, mockRes, mockStatus, mockJson
+
+    beforeEach(() => {
+        mockJson = jest.fn();
+        mockStatus = jest.fn(() => ({ json: mockJson }));
+
+        mockReq = {
+            tokenPayload: {email: 'email@test.com'},
+            body: {password: 'myPassword', name: 'myName'}
+        }
+        
+        mockRes = {
+            status: mockStatus,
+            json: jest.fn()
+        };
+    })
+
+    test('ok', async() => {
+        const mockCreateUser = jest.fn().mockResolvedValue();
+
+        admin.auth.mockImplementation(() => ({
+            createUser: mockCreateUser,
+        }))
+
+        await userController.registerUser(mockReq, mockRes)
+
+        expect(mockCreateUser).toHaveBeenCalledWith({
+            email: 'email@test.com',
+            password: 'myPassword',
+            displayName: 'myName',
+            emailVerified: false
+        })
+
+        expect(mockRes.status).toHaveBeenCalledWith(200)
+        expect(mockRes.status().json).toHaveBeenCalledWith({
+            message: 'Registro exitoso. Revisa tu correo para activar tu cuenta.'
+        })
+    })
+
+    test('error', async() => {
+        const mockCreateUser = jest.fn().mockRejectedValue(new Error('error'))
+
+        admin.auth.mockImplementation(() => ({
+            createUser: mockCreateUser,
+        }))
+
+        await userController.registerUser(mockReq, mockRes)
+
+        expect(mockCreateUser).toHaveBeenCalledWith({
+            email: 'email@test.com',
+            password: 'myPassword',
+            displayName: 'myName',
+            emailVerified: false
+        })
+
+        expect(mockRes.status).toHaveBeenCalledWith(500)
+        expect(mockRes.status().json).toHaveBeenCalledWith({
+            error: 'Error al registrar el usuario.'
         })
     })
 })

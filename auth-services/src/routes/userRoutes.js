@@ -7,5 +7,6 @@ const router = express.Router()
 module.exports = () => {
     router.post('/requestCode', userController.requestRegistrationCode)
     router.get('/responseCode', authController.validateTokenQuery, authController.isAdminToken, userController.responseRegistrationCode)
+    router.post('/register', authController.validateTokenHeader, userController.registerUser)
     return router
 }

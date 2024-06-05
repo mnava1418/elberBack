@@ -24,7 +24,21 @@ const responseRegistrationCode = async(req, res) => {
     })
 }
 
+const registerUser = async(req, res) => {
+    const {email} = req.tokenPayload
+    const {password, name} = req.body
+
+    await userService.registerUser(email, password, name)
+    .then(() => {
+        res.status(200).json({message: 'Registro exitoso. Revisa tu correo para activar tu cuenta.'})
+    })
+    .catch(error => {
+        res.status(500).json({error: error.message})
+    })
+}
+
 module.exports = {
     requestRegistrationCode,
-    responseRegistrationCode
+    responseRegistrationCode,
+    registerUser
 }
