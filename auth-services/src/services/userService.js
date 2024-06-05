@@ -1,5 +1,6 @@
 const tokenService = require('./tokenService')
 const {sendMessage, topics} = require('kafka-services')
+const admin = require('firebase-admin')
 
 const REQUEST_ACCEPT_ACTION = 'accept'
 const REQUEST_REJECT_ACTION = 'reject'
@@ -13,7 +14,6 @@ const requestRegistrationCode = async(email) => {
 
     await sendMessage(topics.email, 'request_access', JSON.stringify({sender: email, acceptToken: encodedAcceptToken, rejectToken: encodedRejectToken}))
     .catch(error => {
-        console.error(error)
         throw new Error(error.message)
     })
 }
@@ -28,12 +28,39 @@ const responseRegistrationCode = async (payload) => {
     
     await sendMessage(topics.email, 'response_access', JSON.stringify({sender, action, token: resgitrationToken}))
     .catch(error => {
-        console.error(error)
         throw new Error(error.message)
+    })
+}
+
+const registerUser = async(email, password, name) => {
+    await admin.auth().createUser({
+        email: email,
+        password: password,
+        displayName: name,
+        emailVerified: false
+    })
+    .catch((error) => {
+        let errorMessage = 'Error al registrar el usuario.'
+        switch (error.code) {
+            case 'auth/email-already-exists':
+                errorMessage = 'El correo electrónico ya está registrado.'
+                break;
+            case 'auth/invalid-password':
+                errorMessage = 'La contraseña es inválida. Debe tener al menos 6 caracteres.'
+                break;
+            case 'auth/invalid-email':
+                errorMessage = 'El correo electrónico es inválido.'
+                break;
+            default:
+                break;
+        }
+
+        throw new Error(errorMessage)
     })
 }
 
 module.exports = {
     requestRegistrationCode,
-    responseRegistrationCode
+    responseRegistrationCode,
+    registerUser
 }
