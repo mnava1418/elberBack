@@ -116,13 +116,18 @@ describe('registerUser', () => {
             status: mockStatus,
             json: jest.fn()
         };
+
+        sendMessage.mockImplementation(async () => {})
     })
 
     test('ok', async() => {
+        sendMessage.mockResolvedValue()
         const mockCreateUser = jest.fn().mockResolvedValue();
+        const mockGenerateEmailVerificationLink = jest.fn().mockResolvedValue('myLink')
 
         admin.auth.mockImplementation(() => ({
             createUser: mockCreateUser,
+            generateEmailVerificationLink: mockGenerateEmailVerificationLink
         }))
 
         await userController.registerUser(mockReq, mockRes)
@@ -134,14 +139,17 @@ describe('registerUser', () => {
             emailVerified: false
         })
 
+        expect(mockGenerateEmailVerificationLink).toHaveBeenCalled()
+        
         expect(mockRes.status).toHaveBeenCalledWith(200)
         expect(mockRes.status().json).toHaveBeenCalledWith({
             message: 'Registro exitoso. Revisa tu correo para activar tu cuenta.'
         })
     })
 
-    test('error', async() => {
+    test('error - registration failed', async() => {
         const mockCreateUser = jest.fn().mockRejectedValue(new Error('error'))
+        const mockGenerateEmailVerificationLink = jest.fn().mockResolvedValue('myLink')
 
         admin.auth.mockImplementation(() => ({
             createUser: mockCreateUser,
@@ -156,9 +164,37 @@ describe('registerUser', () => {
             emailVerified: false
         })
 
+        expect(mockGenerateEmailVerificationLink).not.toHaveBeenCalled()
+        
         expect(mockRes.status).toHaveBeenCalledWith(500)
         expect(mockRes.status().json).toHaveBeenCalledWith({
             error: 'Error al registrar el usuario.'
+        })
+    })
+
+    test('error - confirmation email failed', async() => {
+        const mockCreateUser = jest.fn().mockResolvedValue();
+        const mockGenerateEmailVerificationLink = jest.fn().mockRejectedValue()
+
+        admin.auth.mockImplementation(() => ({
+            createUser: mockCreateUser,
+            generateEmailVerificationLink: mockGenerateEmailVerificationLink
+        }))
+
+        await userController.registerUser(mockReq, mockRes)
+
+        expect(mockCreateUser).toHaveBeenCalledWith({
+            email: 'email@test.com',
+            password: 'myPassword',
+            displayName: 'myName',
+            emailVerified: false
+        })
+
+        expect(mockGenerateEmailVerificationLink).toHaveBeenCalled()
+        
+        expect(mockRes.status).toHaveBeenCalledWith(500)
+        expect(mockRes.status().json).toHaveBeenCalledWith({
+            error: 'Error al generar link de verificación.'
         })
     })
 })

@@ -18,7 +18,6 @@ const validateToken = (token) => {
         const payload = jwt.verify(token, auth.secret)
         return payload
     } catch (error) {
-        console.error(error)
         return undefined
     }
 }

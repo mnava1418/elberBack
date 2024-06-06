@@ -32,13 +32,22 @@ const responseRegistrationCode = async (payload) => {
     })
 }
 
+const sendVerificationLink = async(email) => {
+    try {
+        const verificationLink = await admin.auth().generateEmailVerificationLink(email)    
+        await sendMessage(topics.email, 'verify_account', JSON.stringify({email, verificationLink}))
+    } catch (error) {
+        throw new Error('Error al generar link de verificación.')
+    }
+}
+
 const registerUser = async(email, password, name) => {
     await admin.auth().createUser({
         email: email,
         password: password,
         displayName: name,
         emailVerified: false
-    })
+    })    
     .catch((error) => {
         let errorMessage = 'Error al registrar el usuario.'
         switch (error.code) {
@@ -62,5 +71,6 @@ const registerUser = async(email, password, name) => {
 module.exports = {
     requestRegistrationCode,
     responseRegistrationCode,
-    registerUser
+    registerUser,
+    sendVerificationLink
 }

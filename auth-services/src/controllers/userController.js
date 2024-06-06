@@ -28,13 +28,13 @@ const registerUser = async(req, res) => {
     const {email} = req.tokenPayload
     const {password, name} = req.body
 
-    await userService.registerUser(email, password, name)
-    .then(() => {
+    try {
+        await userService.registerUser(email, password, name)    
+        await userService.sendVerificationLink(email)
         res.status(200).json({message: 'Registro exitoso. Revisa tu correo para activar tu cuenta.'})
-    })
-    .catch(error => {
+    } catch (error) {
         res.status(500).json({error: error.message})
-    })
+    }
 }
 
 module.exports = {
