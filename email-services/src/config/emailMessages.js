@@ -50,8 +50,28 @@ const rejectRegistrationCodeMessage = (email) => {
     return result
 }
 
+const verifyAccountMessage = (email, link) => {
+    const result = `
+        <p>
+            Hola ${email},
+            <br />
+            <br />
+            Visita este vínculo para verificar tu dirección de correo electrónico.
+            <br />
+            <br />
+            <a href='${link}'>${link}</a>
+            <br />
+            <br />
+            Si no solicitaste la verificación de esta dirección, ignora este correo electrónico.
+        </p>
+    `
+
+    return result
+}
+
 module.exports = {
     requestRegistrationCodeMessage,
     acceptRegistrationCodeMessage,
-    rejectRegistrationCodeMessage
+    rejectRegistrationCodeMessage,
+    verifyAccountMessage
 }

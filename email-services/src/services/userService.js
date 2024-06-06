@@ -3,7 +3,8 @@ const { from } = require('../config').email
 const { 
     requestRegistrationCodeMessage, 
     acceptRegistrationCodeMessage, 
-    rejectRegistrationCodeMessage 
+    rejectRegistrationCodeMessage,
+    verifyAccountMessage
 } = require('../config/emailMessages')
 
 const requestRegistrationCode = (message) => {
@@ -26,7 +27,15 @@ const responseRegistrationCode = (message) => {
     emailService.sendEmail(sender, 'DOT - Registration Request', emailMessage)
 }
 
+const verifyAccount = (message) => {
+    const messageInfo = JSON.parse(message)
+    const {email, verificationLink} = messageInfo
+    const emailMessage = verifyAccountMessage(email, verificationLink)
+    emailService.sendEmail(email, 'DOT - Verify your Account', emailMessage)
+}
+
 module.exports = {
     requestRegistrationCode,
-    responseRegistrationCode
+    responseRegistrationCode,
+    verifyAccount
 }
