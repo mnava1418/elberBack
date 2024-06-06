@@ -1,6 +1,6 @@
 const {consumeMessagesFromTopic} = require ('kafka-services')
 const { consumeMessages } = require('../../src/services/messageService')
-const { requestRegistrationCode, responseRegistrationCode } = require('../../src/services/userService')
+const { requestRegistrationCode, responseRegistrationCode, verifyAccount } = require('../../src/services/userService')
 
 jest.mock('kafka-services', () => ({
     consumeMessagesFromTopic: jest.fn(),
@@ -10,6 +10,7 @@ jest.mock('kafka-services', () => ({
 jest.mock('../../src/services/userService', () => ({
     requestRegistrationCode: jest.fn(),
     responseRegistrationCode: jest.fn(),
+    verifyAccount: jest.fn()
 }))
 
 describe('consumeMessages', () => {
@@ -38,5 +39,16 @@ describe('consumeMessages', () => {
 
         await consumeMessages()
         expect(responseRegistrationCode).toHaveBeenCalledWith('testMessage')
+    })
+
+    test('process verify_account', async() => {
+        consumeMessagesFromTopic.mockImplementation((topic, callback) => {
+            callback('verify_account', 'testMessage')
+            return Promise.resolve()
+        })
+        verifyAccount.mockImplementation(() => {})
+
+        await consumeMessages()
+        expect(verifyAccount).toHaveBeenCalledWith('testMessage')
     })
 })

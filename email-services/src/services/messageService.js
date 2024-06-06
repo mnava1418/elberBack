@@ -12,6 +12,9 @@ const processMessage = (key, message) => {
             case 'response_access':
                 userService.responseRegistrationCode(message)
                 break;
+            case 'verify_account':
+                userService.verifyAccount(message)
+                break;
             default:
                 console.info('Unable to identify message type')
                 break;
@@ -23,8 +26,7 @@ const processMessage = (key, message) => {
 
 const consumeMessages = async() => {
     await consumeMessagesFromTopic(topics.email, processMessage)
-    .catch(error => {
-        console.error(error)
+    .catch(error => {        
         throw new Error(error.message)
     })
 }

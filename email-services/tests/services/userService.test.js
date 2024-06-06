@@ -1,9 +1,10 @@
 const { sendEmail } = require('../../src/services/emailService')
-const {requestRegistrationCode, responseRegistrationCode} = require('../../src/services/userService')
+const {requestRegistrationCode, responseRegistrationCode, verifyAccount} = require('../../src/services/userService')
 const {
     requestRegistrationCodeMessage,
     acceptRegistrationCodeMessage,
-    rejectRegistrationCodeMessage
+    rejectRegistrationCodeMessage,
+    verifyAccountMessage
 } = require('../../src/config/emailMessages')
 const {from} = require('../../src/config').email
 
@@ -45,5 +46,15 @@ describe('Test User Services', () => {
         responseRegistrationCode(message)
 
         expect(sendEmail).toHaveBeenCalledWith(messageInfo.sender, 'DOT - Registration Request', messageSent)
+    })
+
+    test('verify account', () => {
+        const messageInfo = {email: 'test@test.com', verificationLink: 'link'}
+        const message = JSON.stringify(messageInfo)
+        const messageSent = verifyAccountMessage(messageInfo.email, messageInfo.verificationLink)
+        
+        verifyAccount(message)
+
+        expect(sendEmail).toHaveBeenCalledWith(messageInfo.email, 'DOT - Verify your Account', messageSent)
     })
 })
