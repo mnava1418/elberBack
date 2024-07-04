@@ -21,6 +21,13 @@
             "request": "launch",
             "command": "npm run start",
             "cwd": "${workspaceFolder}/auth-services"
+        },
+        {
+            "type": "node-terminal",
+            "name": "Run AI Services",
+            "request": "launch",
+            "command": "npm run start",
+            "cwd": "${workspaceFolder}/ai-services"
         }
     ]
 }

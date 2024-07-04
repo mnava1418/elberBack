@@ -3,12 +3,17 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "ts-node src/bin/www"
+    "start": "ts-node src/bin/www",
+    "test": "jest"
   },
   "dependencies": {
+    "@google-cloud/dialogflow": "^6.7.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
+    "dotenv": "^16.4.5",
     "express": "~4.16.1",
+    "express-rate-limit": "^7.3.1",
+    "firebase-admin": "^12.2.0",
     "morgan": "~1.9.1"
   },
   "main": "app.js",
@@ -19,9 +24,15 @@
   "devDependencies": {
     "@types/cookie-parser": "^1.4.7",
     "@types/debug": "^4.1.12",
+    "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.12",
     "@types/morgan": "^1.9.9",
     "@types/node": "^20.14.9",
+    "@types/uuid": "^10.0.0",
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.1.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.2"
   }
