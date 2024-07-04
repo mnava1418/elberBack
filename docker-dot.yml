@@ -42,6 +42,16 @@ services:
       - kafka
     networks:
       - default  
+  ai-services:
+    build:
+      context: .
+      dockerfile: ai-services/Dockerfile 
+    ports:
+      - "4042:4042"
+    environment:
+      - TEST=TEST
+    networks:
+      - default      
   email-services:
     build:
       context: .
