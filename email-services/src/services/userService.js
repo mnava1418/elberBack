@@ -24,14 +24,14 @@ const responseRegistrationCode = (message) => {
         emailMessage = rejectRegistrationCodeMessage(sender)
     }
 
-    emailService.sendEmail(sender, 'DOT - Registration Request', emailMessage)
+    emailService.sendEmail(sender, 'Elber - Registration Request', emailMessage)
 }
 
 const verifyAccount = (message) => {
     const messageInfo = JSON.parse(message)
     const {email, verificationLink} = messageInfo
     const emailMessage = verifyAccountMessage(email, verificationLink)
-    emailService.sendEmail(email, 'DOT - Verify your Account', emailMessage)
+    emailService.sendEmail(email, 'Elber - Verify your Account', emailMessage)
 }
 
 module.exports = {

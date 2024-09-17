@@ -35,7 +35,7 @@ describe('Test User Services', () => {
         
         responseRegistrationCode(message)
 
-        expect(sendEmail).toHaveBeenCalledWith(messageInfo.sender, 'DOT - Registration Request', messageSent)
+        expect(sendEmail).toHaveBeenCalledWith(messageInfo.sender, 'Elber - Registration Request', messageSent)
     })
 
     test('reject registration code', () => {
@@ -45,7 +45,7 @@ describe('Test User Services', () => {
         
         responseRegistrationCode(message)
 
-        expect(sendEmail).toHaveBeenCalledWith(messageInfo.sender, 'DOT - Registration Request', messageSent)
+        expect(sendEmail).toHaveBeenCalledWith(messageInfo.sender, 'Elber - Registration Request', messageSent)
     })
 
     test('verify account', () => {
@@ -55,6 +55,6 @@ describe('Test User Services', () => {
         
         verifyAccount(message)
 
-        expect(sendEmail).toHaveBeenCalledWith(messageInfo.email, 'DOT - Verify your Account', messageSent)
+        expect(sendEmail).toHaveBeenCalledWith(messageInfo.email, 'Elber - Verify your Account', messageSent)
     })
 })
