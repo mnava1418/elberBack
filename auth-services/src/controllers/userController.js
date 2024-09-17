@@ -31,7 +31,7 @@ const registerUser = async(req, res) => {
     try {
         await userService.registerUser(email, password, name)    
         await userService.sendVerificationLink(email)
-        res.status(200).json({message: 'Registro exitoso. Revisa tu correo para activar tu cuenta.'})
+        res.status(200).json({message: 'Registro exitoso. Revisa tu correo para activar tu cuenta.', email})
     } catch (error) {
         res.status(500).json({error: error.message})
     }

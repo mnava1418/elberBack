@@ -3,6 +3,7 @@ const {sign} = require('jsonwebtoken')
 const {sendMessage, topics} = require('kafka-services')
 const userController = require('../../src/controllers/userController')
 const admin = require('firebase-admin')
+const { email } = require('../../../email-services/src/config')
 
 jest.mock('jsonwebtoken', () => ({
     sign: jest.fn()
@@ -143,7 +144,8 @@ describe('registerUser', () => {
         
         expect(mockRes.status).toHaveBeenCalledWith(200)
         expect(mockRes.status().json).toHaveBeenCalledWith({
-            message: 'Registro exitoso. Revisa tu correo para activar tu cuenta.'
+            message: 'Registro exitoso. Revisa tu correo para activar tu cuenta.',
+            email: 'email@test.com'
         })
     })
 
