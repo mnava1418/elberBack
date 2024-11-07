@@ -6,7 +6,12 @@ const validateTokenQuery = (req, res, next) => {
 }
 
 const validateTokenHeader = (req, res, next) => {
-    let token = req.headers.token
+    let token = req.headers.authorization
+
+    if(token) {
+        token = token.split(' ')[1]
+    }
+
     validateToken(req, res, next, token)
 }
 
