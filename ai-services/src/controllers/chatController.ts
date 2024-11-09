@@ -1,6 +1,7 @@
 import {Response} from 'express'
-import { AuthenticationRequest, ChatResponse } from "../interfaces/dialogFlowInterface";
+import { AuthenticationRequest } from "../interfaces/dialogFlowInterface";
 import * as chatService from '../services/chatService'
+import { ChatResponse } from '../interfaces/chatInterface';
 
 export const getMessages = async (req: AuthenticationRequest, res: Response) => {
     let{lastKey} = req.query

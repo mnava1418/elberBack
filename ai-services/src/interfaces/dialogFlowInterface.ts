@@ -9,8 +9,3 @@ export interface DialogFlowResponse {
 export interface AuthenticationRequest extends Request {
     user?: admin.auth.DecodedIdToken
 }
-
-export interface ChatResponse {
-    messages: {},
-    lastKey: string | null
-}

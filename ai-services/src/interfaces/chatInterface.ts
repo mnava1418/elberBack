@@ -3,3 +3,8 @@ export type ChatMessage = {
     sender: 'user' | 'bot',
     isFavorite: boolean
 }
+
+export interface ChatResponse {
+    messages: {},
+    lastKey: string | null
+}

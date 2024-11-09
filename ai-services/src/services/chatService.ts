@@ -1,6 +1,5 @@
-import { ChatMessage } from "../interfaces/chatInterface";
+import { ChatMessage, ChatResponse } from "../interfaces/chatInterface";
 import admin from 'firebase-admin'
-import { ChatResponse } from "../interfaces/dialogFlowInterface";
 
 export const saveChatMessages = async(uuid: string, data: ChatMessage[]) => {
   try {
