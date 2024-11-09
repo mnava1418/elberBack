@@ -1,12 +1,14 @@
-import {Request, Response} from 'express'
+import {Response} from 'express'
 import {queryDialogflow} from '../services/dialogFlowService'
 import { DialogFlowResponse } from '../interfaces/dialogFlowInterface'
+import { AuthenticationRequest } from './authController'
 
-const sendMessage = async (req: Request, res: Response) => {
+const sendMessage = async (req: AuthenticationRequest, res: Response) => {
     const {query} = req.body
+    const user = req.user
 
     if(query) {
-        await queryDialogflow(query)
+        await queryDialogflow(user!.uid, query)
         .then((response: DialogFlowResponse) => {
             const {intentName, responseText} = response
             res.status(200).json({intentName, responseText})
