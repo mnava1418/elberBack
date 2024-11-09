@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response} from 'express'
 import admin from 'firebase-admin'
 
-interface AuthenticationRequest extends Request {
+export interface AuthenticationRequest extends Request {
     user?: admin.auth.DecodedIdToken
 }
 
