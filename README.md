@@ -6,3 +6,6 @@ docker run --network dot_default --name dot-user-services -p 4040:4040 dot/user/
 
 ##DOCKER Compose
 docker-compose  -f docker-dot.yml up
+
+##Run project as nodemon
+ts-node-dev --respawn --transpile-only
