@@ -1,9 +1,7 @@
-import {NextFunction, Request, Response} from 'express'
+import {NextFunction, Response} from 'express'
 import admin from 'firebase-admin'
+import { AuthenticationRequest } from '../interfaces/dialogFlowInterface'
 
-export interface AuthenticationRequest extends Request {
-    user?: admin.auth.DecodedIdToken
-}
 
 const validateToken = async (req: AuthenticationRequest, res: Response, next: NextFunction) => {
     try {
