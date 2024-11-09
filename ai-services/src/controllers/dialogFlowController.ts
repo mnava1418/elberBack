@@ -1,7 +1,6 @@
 import {Response} from 'express'
 import {queryDialogflow} from '../services/dialogFlowService'
-import { DialogFlowResponse } from '../interfaces/dialogFlowInterface'
-import { AuthenticationRequest } from './authController'
+import { AuthenticationRequest, DialogFlowResponse } from '../interfaces/dialogFlowInterface'
 
 const sendMessage = async (req: AuthenticationRequest, res: Response) => {
     const {query} = req.body
