@@ -3,11 +3,11 @@ import {queryDialogflow} from '../services/dialogFlowService'
 import { AuthenticationRequest, DialogFlowResponse } from '../interfaces/dialogFlowInterface'
 
 const sendMessage = async (req: AuthenticationRequest, res: Response) => {
-    const {query} = req.body
+    const {query, id} = req.body
     const user = req.user
 
     if(query) {
-        await queryDialogflow(user!.uid, query)
+        await queryDialogflow(user!.uid, query, id)
         .then((response: DialogFlowResponse) => {
             const {intentName, responseText} = response
             res.status(200).json({intentName, responseText})

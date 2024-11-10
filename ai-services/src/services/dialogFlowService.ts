@@ -29,15 +29,15 @@ const detectIntent =  async  (sessionId: string, query: string, languageCode: st
     return result;
 }
 
-export const queryDialogflow = async (userId: string, query: string, sessionId: string = uuid()): Promise<DialogFlowResponse> => {
+export const queryDialogflow = async (userId: string, query: string, messageId: string, sessionId: string = uuid()): Promise<DialogFlowResponse> => {
     try {
         const response = await detectIntent(sessionId, query, 'es')
         const responseText = response?.fulfillmentText ? response.fulfillmentText : ''
         const intentName = response?.intent?.displayName ? response.intent.displayName : ''
 
-
-        const userMessage:ChatMessage = {message: query, sender: 'user', isFavorite: false}
-        const botMessage:ChatMessage = {message: responseText, sender: 'bot', isFavorite: false}
+        const botMessageId = Date.now().toString()
+        const userMessage:ChatMessage = {message: query, sender: 'user', isFavorite: false, id: messageId}
+        const botMessage:ChatMessage = {message: responseText, sender: 'bot', isFavorite: false, id: botMessageId}
         const messages: ChatMessage[] = [userMessage, botMessage]
 
         saveChatMessages(userId, messages)
@@ -45,7 +45,7 @@ export const queryDialogflow = async (userId: string, query: string, sessionId: 
             console.error((error as Error).message)
         })
         
-        return {responseText, intentName}
+        return {responseText, intentName, id: botMessageId}
 
     } catch (error) {
         throw new Error('Error al conectar con dialogFlow')

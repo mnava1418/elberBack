@@ -8,7 +8,7 @@ const validateToken = async (req: AuthenticationRequest, res: Response, next: Ne
         const authorizationHeader = req.headers.authorization
 
         if(!authorizationHeader) {
-            res.status(401).json({error: 'Unauthorized user.'})
+            return res.status(401).json({error: 'Unauthorized user.'})
         }
 
         const token = authorizationHeader!.split(' ')[1]

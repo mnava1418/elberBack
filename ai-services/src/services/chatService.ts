@@ -7,9 +7,8 @@ export const saveChatMessages = async(uuid: string, data: ChatMessage[]) => {
     const path = `/${uuid}/chat`
     const messages: {[key: string]: ChatMessage} = {}
 
-    data.forEach((message, index) => {
-      const timestamp = Date.now().toString()
-      messages[`${path}/${timestamp}${index}`] = message
+    data.forEach((message) => {
+      messages[`${path}/${message.id}`] = message
     })
 
     await db.ref().update(messages)
@@ -19,7 +18,7 @@ export const saveChatMessages = async(uuid: string, data: ChatMessage[]) => {
   }
 }
 
-export const getMessages = async (uuid: string, lastKey: string | null = null, pageSize = 2): Promise<ChatResponse> => {
+export const getMessages = async (uuid: string, lastKey: string | null = null, pageSize = 20): Promise<ChatResponse> => {
   const db = admin.database()
   const ref = db.ref(`/${uuid}/chat`)
   let query
@@ -32,7 +31,7 @@ export const getMessages = async (uuid: string, lastKey: string | null = null, p
 
   try {
     const snapshot = await query.once("value")
-    const messages = snapshot.toJSON()
+    const messages = snapshot.toJSON() as Record<string, ChatMessage>
 
     if (!messages) {
       return { messages: {}, lastKey: null }

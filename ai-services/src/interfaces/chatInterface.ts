@@ -1,10 +1,11 @@
 export type ChatMessage = {
     message: string,
     sender: 'user' | 'bot',
-    isFavorite: boolean
+    isFavorite: boolean,
+    id: string
 }
 
 export interface ChatResponse {
-    messages: {},
+    messages: {[key:string]: ChatMessage},
     lastKey: string | null
 }
