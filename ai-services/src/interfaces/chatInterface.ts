@@ -6,6 +6,6 @@ export type ChatMessage = {
 }
 
 export interface ChatResponse {
-    messages: {[key:string]: ChatMessage},
+    messages: ChatMessage[],
     lastKey: string | null
 }

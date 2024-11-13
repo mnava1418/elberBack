@@ -19,26 +19,30 @@ export const saveChatMessages = async(uuid: string, data: ChatMessage[]) => {
 }
 
 export const getMessages = async (uuid: string, lastKey: string | null = null, pageSize = 20): Promise<ChatResponse> => {
-  const db = admin.database()
-  const ref = db.ref(`/${uuid}/chat`)
-  let query
-
-  if(lastKey) {
-    query = ref.orderByKey().startAfter(lastKey).limitToFirst(pageSize)
-  } else {
-    query = ref.orderByKey().limitToFirst(pageSize);
-  }
-
   try {
-    const snapshot = await query.once("value")
-    const messages = snapshot.toJSON() as Record<string, ChatMessage>
+    const db = admin.database()
+    const ref = db.ref(`/${uuid}/chat`)
+    let query = ref.orderByKey().limitToLast(pageSize + (lastKey ? 1 : 0));
 
-    if (!messages) {
-      return { messages: {}, lastKey: null }
+    if(lastKey) {
+      query = query.endAt(lastKey)
+    } 
+
+    const snapshot = await query.once("value")
+    const data = snapshot.toJSON() as Record<string, ChatMessage>
+
+    if (!data) {
+      return { messages: [], lastKey: null }
     }
 
-    const keys = Object.keys(messages)
-    const newLastKey = keys[keys.length - 1]
+    const messages = Object.values(data).reverse()
+    
+    if (lastKey && messages[0]?.id === lastKey) {
+      messages.shift();
+    }
+    
+    const keys = Object.keys(data)
+    const newLastKey = keys.length > 0 ? keys[0] : null
 
     return {messages, lastKey: newLastKey}
     
