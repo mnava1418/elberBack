@@ -18,7 +18,7 @@ export const saveChatMessages = async(uuid: string, data: ChatMessage[]) => {
   }
 }
 
-export const getMessages = async (uuid: string, lastKey: string | null = null, pageSize = 20): Promise<ChatResponse> => {
+export const getMessages = async (uuid: string, lastKey: string | null = null, pageSize = 50): Promise<ChatResponse> => {
   try {
     const db = admin.database()
     const ref = db.ref(`/${uuid}/chat`)
