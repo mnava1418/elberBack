@@ -15,3 +15,16 @@ export const getMessages = async (req: AuthenticationRequest, res: Response) => 
         res.status(500).json({error: error.message})
     })
 }
+
+export const deleteMessages = async(req: AuthenticationRequest, res: Response) => {
+    const messageId = req.params.messageId
+    const user = req.user
+
+    await chatService.deleteMessages(user!.uid, messageId ? messageId.toString() : null)
+    .then(() => {
+        res.status(200).json({})
+    })
+    .catch((error: Error) => {
+        res.status(500).json({error: error.message})
+    })
+}

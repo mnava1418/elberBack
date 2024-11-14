@@ -51,3 +51,20 @@ export const getMessages = async (uuid: string, lastKey: string | null = null, p
     throw Error('Unable to get chat messages')
   }
 }
+
+export const deleteMessages = async(uuid: string, messageId: string | null = null) => {
+  try {
+    const db = admin.database()
+    let query = `/${uuid}/chat`
+
+    if(messageId) {
+      query = `${query}/${messageId}`
+    }
+
+    const ref = db.ref(query)
+    await ref.remove()
+  } catch (error) {
+    console.error('Unable to delete messages', error)
+    throw Error('Unable to delete messages')
+  }
+}
