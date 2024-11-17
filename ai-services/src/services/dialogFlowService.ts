@@ -36,8 +36,8 @@ export const queryDialogflow = async (userId: string, query: string, messageId: 
         const intentName = response?.intent?.displayName ? response.intent.displayName : ''
 
         const botMessageId = Date.now().toString()
-        const userMessage:ChatMessage = {message: query, sender: 'user', isFavorite: false, id: messageId}
-        const botMessage:ChatMessage = {message: responseText, sender: 'bot', isFavorite: false, id: botMessageId}
+        const userMessage:ChatMessage = {text: query, sender: 'user', isFavorite: false, id: messageId}
+        const botMessage:ChatMessage = {text: responseText, sender: 'bot', isFavorite: false, id: botMessageId}
         const messages: ChatMessage[] = [userMessage, botMessage]
 
         saveChatMessages(userId, messages)

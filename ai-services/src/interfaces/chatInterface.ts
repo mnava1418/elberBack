@@ -1,5 +1,5 @@
 export type ChatMessage = {
-    message: string,
+    text: string,
     sender: 'user' | 'bot',
     isFavorite: boolean,
     id: string
