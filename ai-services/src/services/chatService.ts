@@ -68,3 +68,14 @@ export const deleteMessages = async(uuid: string, messageId: string | null = nul
     throw Error('Unable to delete messages')
   }
 }
+
+export const setIsFavorite = async (uuid: string, messageId: string, isFavorite: boolean) => {
+  try {
+    const db = admin.database()
+    const ref = db.ref(`/${uuid}/chat/${messageId}`)
+    await ref.update({isFavorite})
+  } catch (error) {
+    console.error(error)
+    throw Error('Unable to set isFavorite')
+  }
+}

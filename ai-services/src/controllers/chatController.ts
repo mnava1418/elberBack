@@ -28,3 +28,20 @@ export const deleteMessages = async(req: AuthenticationRequest, res: Response) =
         res.status(500).json({error: error.message})
     })
 }
+
+export const setIsFavorite = async (req: AuthenticationRequest, res: Response) => {
+    const {messageId, isFavorite} = req.body
+    const user = req.user
+
+    if(messageId !== undefined && isFavorite !== undefined && user !== undefined) {
+        await chatService.setIsFavorite(user.uid, messageId, isFavorite)
+        .then(() => {
+            res.status(200).json({})
+        })
+        .catch((error: Error) => {
+            res.status(500).json({error: error.message})
+        })
+    } else {
+        res.status(500).json({error: 'Unable to process your request. Missing data.'})
+    }
+}
