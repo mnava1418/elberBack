@@ -2,7 +2,7 @@
 FROM node:16
 
 # Establecer el directorio de trabajo
-WORKDIR /usr/src/dot
+WORKDIR /usr/src/elber
 
 # Copiar los proyectos locales
 COPY ./ai-services/package*.json ./ai-services/
@@ -21,4 +21,4 @@ COPY ./ai-services/ ./ai-services/
 EXPOSE 4042
 
 # Comando para ejecutar la aplicación
-CMD ["ts-node", "/usr/src/dot/ai-services/src/bin/www.ts"]
+CMD ["ts-node", "/usr/src/elber/ai-services/src/bin/www.ts"]

@@ -2,7 +2,7 @@
 FROM node:16
 
 # Establecer el directorio de trabajo
-WORKDIR /usr/src/dot
+WORKDIR /usr/src/elber
 
 # Copiar los proyectos locales
 COPY ./email-services/package*.json ./email-services/
@@ -19,4 +19,4 @@ COPY ./kafka-services/ ./kafka-services/
 # Establecer variables de entorno si es necesario
 
 # Comando para ejecutar la aplicación
-CMD ["node", "/usr/src/dot/email-services/src/app.js"]
+CMD ["node", "/usr/src/elber/email-services/src/app.js"]

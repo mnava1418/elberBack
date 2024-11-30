@@ -2,7 +2,7 @@
 FROM node:16
 
 # Establecer el directorio de trabajo
-WORKDIR /usr/src/dot
+WORKDIR /usr/src/elber
 
 # Copiar los proyectos locales
 COPY ./auth-services/package*.json ./auth-services/
@@ -20,4 +20,4 @@ COPY ./kafka-services/ ./kafka-services/
 EXPOSE 4041
 
 # Comando para ejecutar la aplicación
-CMD ["node", "/usr/src/dot/auth-services/src/bin/www"]
+CMD ["node", "/usr/src/elber/auth-services/src/bin/www"]
