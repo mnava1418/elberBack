@@ -16,6 +16,9 @@ RUN cd ./email-services && npm install
 COPY ./email-services/ ./email-services/
 COPY ./kafka-services/ ./kafka-services/
 
+# Copiar credenciales
+COPY ./creds/ ./email-services/creds/
+
 # Establecer variables de entorno si es necesario
 
 # Comando para ejecutar la aplicación

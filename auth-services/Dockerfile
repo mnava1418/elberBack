@@ -16,6 +16,9 @@ RUN cd ./auth-services && npm install
 COPY ./auth-services/ ./auth-services/
 COPY ./kafka-services/ ./kafka-services/
 
+# Copiar credenciales
+COPY ./creds/ ./auth-services/creds/
+
 # Exponer el puerto en el que tu aplicación estará escuchando
 EXPOSE 4041
 

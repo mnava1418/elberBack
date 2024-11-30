@@ -17,6 +17,9 @@ RUN npm install -g ts-node typescript
 # Copiar el resto de los archivos de los proyectos
 COPY ./ai-services/ ./ai-services/
 
+# Copiar credenciales
+COPY ./creds/ ./ai-services/creds/
+
 # Exponer el puerto en el que tu aplicación estará escuchando
 EXPOSE 4042
 
