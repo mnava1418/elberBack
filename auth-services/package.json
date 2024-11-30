@@ -1,7 +1,7 @@
 {
   "name": "auth-services",
   "version": "1.0.0",
-  "description": "Authorization services por DOT",
+  "description": "Authorization services for Elber",
   "scripts": {
     "start": "node ./src/bin/www",
     "test": "jest"
