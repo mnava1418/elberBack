@@ -6,6 +6,8 @@ const initApp = () => {
         credential: admin.credential.cert(firebase.cred as string),
         databaseURL: firebase.db
     })
+
+    console.info('Firebase Ready!')
 }
 
 export default initApp

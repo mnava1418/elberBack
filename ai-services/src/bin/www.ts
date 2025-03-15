@@ -4,6 +4,7 @@ import app from '../app';
 import debugModule from 'debug';
 import http from 'http';
 import firebaseLoader from '../loaders/firebaseLoader'
+import socketLoader from '../loaders/socketLoader'
 
 const debug = debugModule('myapp:server');
 const port = normalizePort('4042');
@@ -17,6 +18,7 @@ server.on('listening', onListening);
 
 //Loaders
 firebaseLoader()
+socketLoader(server)
 
 function normalizePort(val: string) {
   const port = parseInt(val, 10);
