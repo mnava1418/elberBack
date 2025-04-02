@@ -1,13 +1,15 @@
-export type IntentName = 'elber.say_hi' | 'elber.fallback' | 'elber.name'
+export type IntentName = 'elber_say_hi' | 'elber_fallback' | 'elber_name'
 
-export type NLPIntent = {
-    name: IntentName,
-    trainingPhrases: Array<string>,
-    keyWords: Array<string>,
-    responses: Array<string>
+export type NLPIntents = {
+    keywordRules: KeywordRule[],
 }
 
 export type TrainData = {
     phrase: string,
+    intent: IntentName
+}
+
+export type KeywordRule = {
+    keywords: string[],
     intent: IntentName
 }
