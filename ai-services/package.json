@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "start": "ts-node src/bin/www",
-    "start:train": "ts-node src/bin/trainModel",
     "test": "jest"
   },
   "dependencies": {
