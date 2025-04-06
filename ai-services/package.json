@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "ts-node src/bin/www",
+    "start:local": "ts-node src/bin/localInteraction",
     "test": "jest"
   },
   "dependencies": {
