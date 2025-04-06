@@ -1,4 +1,4 @@
-import { IntentName } from "../interfaces/nlpInterface"
+import { IntentCategory, NLPResponse } from "../interfaces/nlpInterface"
 import * as dialogflow from './dialogFlowService'
 
 const normalizeText = (text: string): string => {
@@ -10,32 +10,22 @@ const normalizeText = (text: string): string => {
         .trim()
 }
 
-const identifyIntentWithDialogFlow = async(normalizedText: string): Promise<IntentName> => {
-    const intent = await dialogflow.detectIntent(normalizedText, 'es')
-    .catch(() => {
-        const defaultIntent: IntentName = 'elber_fallback' 
-        return defaultIntent
-    })
+const generateResponse = async (text: string): Promise<NLPResponse> => {
+    try {
+        const normalizedText = normalizeText(text)
+        const intentInfo =  await dialogflow.detectIntent(normalizedText, 'es')
+        const intentCategory: IntentCategory = intentInfo.intentName.split('_')[1] as IntentCategory
+        
+        switch (intentCategory) {
+            case 'general':
+                return {text: intentInfo.responseText}
+            default:
+                throw new Error('Unknown category.')
+        }
 
-    
-    
-    return intent
-}
-
-export const generateResponse = async (text: string) => {
-    const normalizedText = normalizeText(text)
-    const intent = await identifyIntentWithDialogFlow(normalizedText)
-    return(intent)
-}
-
-
-
-/*const intereact = async () => {
-    while (true) {
-        let pregunta = readlineSync.question('Martin: ')
-        await nlpService.generateResponse(pregunta)
-        .then(intent => {
-            console.log('Elber:', intent)
-        }) 
+    } catch (error) {
+        return{text: '¡Changos! Algo no jaló… fue culpa del becario imaginario, lo juro.'}
     }
-}*/
+}
+
+export default generateResponse
