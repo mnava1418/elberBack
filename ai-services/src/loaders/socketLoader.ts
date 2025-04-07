@@ -1,6 +1,7 @@
 import { Server } from "socket.io"
 import http from 'http';
 import admin from 'firebase-admin'
+import socketSetListeners from "../controllers/socketController";
 
 const socketIO = (httpServer: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>) => {
     const io = new Server(httpServer, {
@@ -25,7 +26,8 @@ const socketIO = (httpServer: http.Server<typeof http.IncomingMessage, typeof ht
     })
 
     io.on('connection', (socket) => {
-        console.log('New client connected:', socket.id)
+        console.info('New client connected:', socket.id)
+        socketSetListeners(socket)
     })
 
     console.info('Socket Ready!')
