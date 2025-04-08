@@ -1,12 +1,13 @@
 
 import { DefaultEventsMap, Socket } from "socket.io";
-import generateResponse from "../services/nlpService";
+import * as nlpServices from "../services/nlpService";
 
 const elberListener = (socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>) => {
-    socket.on('message-to-elber', (message) => {
-        generateResponse(message)
+    socket.on('message-to-elber', (uid, message) => {
+        nlpServices.generateResponse(message)
         .then(nlpResponse => {
-            console.log(nlpResponse.text)
+            nlpServices.saveMessages(uid, message, nlpResponse.text)
+            socket.emit('response-from-elber', nlpResponse.text)
         })
     })
 }
