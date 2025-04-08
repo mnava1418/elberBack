@@ -1,4 +1,6 @@
+import { ChatMessage } from "../interfaces/chatInterface"
 import { IntentCategory, NLPResponse } from "../interfaces/nlpInterface"
+import { saveChatMessages } from "./chatService"
 import * as dialogflow from './dialogFlowService'
 
 const normalizeText = (text: string): string => {
@@ -10,7 +12,7 @@ const normalizeText = (text: string): string => {
         .trim()
 }
 
-const generateResponse = async (text: string): Promise<NLPResponse> => {
+export const generateResponse = async (text: string): Promise<NLPResponse> => {
     try {
         const normalizedText = normalizeText(text)
         const intentInfo =  await dialogflow.detectIntent(normalizedText, 'es')
@@ -27,4 +29,25 @@ const generateResponse = async (text: string): Promise<NLPResponse> => {
     }
 }
 
-export default generateResponse
+export const saveMessages = (uid: string, userText: string, elberText: string) => {
+    const idMessage = Date.now()
+
+    const userMessage: ChatMessage = {
+        id: idMessage.toString(),
+        isFavorite: false,
+        sender: 'user',
+        text: userText
+    }
+
+    const elberMessage: ChatMessage = {
+        id: (idMessage + 1).toString(),
+        isFavorite: false,
+        sender: 'bot',
+        text: elberText
+    }
+
+    saveChatMessages(uid, [userMessage, elberMessage])
+    .catch(error => {
+        console.error(error)
+    })
+}
