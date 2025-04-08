@@ -22,7 +22,6 @@ const generateResponse = async (text: string): Promise<NLPResponse> => {
             default:
                 throw new Error('Unknown category.')
         }
-
     } catch (error) {
         return{text: '¡Changos! Algo no jaló… fue culpa del becario imaginario, lo juro.'}
     }
