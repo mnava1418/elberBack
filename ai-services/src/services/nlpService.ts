@@ -7,7 +7,7 @@ import * as dialogflow from './dialogFlowService'
 import { aws } from '../config/auth'
 
 const pollyClient = new PollyClient({
-    region: 'us-east-2',
+    region: 'us-east-1',
     credentials: {
         accessKeyId: aws.access_key as string,
         secretAccessKey: aws.secret_key as string
@@ -63,22 +63,15 @@ export const saveMessages = (uid: string, userText: string, elberText: string) =
     })
 }
 
-const buildSSML = (text: string) => {
-    return `
-    <speak>
-        <prosody pitch="-2%" rate="medium">
-            ${text}
-        </prosody>
-    </speak>`
-}
-
 export const textToAudio = async (socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>, text: string) => {
     try {
         const command = new SynthesizeSpeechCommand({
-            Text: buildSSML(text),
-            TextType: 'ssml',
+            Text: text,
+            TextType: 'text',
             OutputFormat: 'mp3',
-            VoiceId: 'Enrique'
+            VoiceId: 'Andres',
+            Engine: 'neural',
+            LanguageCode: 'es-MX'
         })
 
         const result = await pollyClient.send(command)
