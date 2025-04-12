@@ -97,7 +97,7 @@ export const textToAudio = async (socket: Socket<DefaultEventsMap, DefaultEvents
             socket.emit('audio-chunk-elber', value)
         }
   
-        socket.emit('audio-end-elber')
+        socket.emit('audio-end-elber', text)
     } catch (error) {
         socket.emit('audio-error-elber')
     }
