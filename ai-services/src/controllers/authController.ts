@@ -1,29 +1,24 @@
-import {NextFunction, Response} from 'express'
-import admin from 'firebase-admin'
-import { AuthenticationRequest } from '../interfaces/dialogFlowInterface'
+import {NextFunction, Response, Request} from 'express'
+import { CustomHttpHeaders } from '../interfaces/httpInterface'
+import { gateway } from '../config/auth'
 
-
-const validateToken = async (req: AuthenticationRequest, res: Response, next: NextFunction) => {
+const validateGateway = (req: Request, res: Response, next: NextFunction) => {
     try {
-        const authorizationHeader = req.headers.authorization
+        const headers = req.headers as CustomHttpHeaders
 
-        if(!authorizationHeader) {
-            return res.status(401).json({error: 'Unauthorized user.'})
-        }
-
-        const token = authorizationHeader!.split(' ')[1]
-        const user = await admin.auth().verifyIdToken(token as string)
-        
-        req.user = user
-
-        next()
+        if(headers['x-api-gateway-secret'] === gateway.secret) {
+            next()
+        } else {
+            res.status(403).json({error: 'Invalid Call.'})
+        }        
     } catch (error) {
-        res.status(401).json({error: 'Unauthorized user.'})
+        console.error(error)
+        res.status(500).json({error: 'Internal Error Server.'})
     }
 }
 
 const authController = {
-    validateToken
+    validateGateway
 }
 
 export default authController
