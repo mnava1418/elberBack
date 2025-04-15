@@ -1,5 +1,6 @@
 import app from '../app'
 import http from 'http'
+import initFireBase from '../loaders/firebase.loader';
 
 const normalizePort = (val: string) => {
   const port = parseInt(val, 10);
@@ -47,6 +48,9 @@ const port = normalizePort('4040');
 const startServer = () => {
   app.set('port', port);
   const server = http.createServer(app);
+
+  //loaders
+  initFireBase()
 
   server.listen(port);
   server.on('error', onError);

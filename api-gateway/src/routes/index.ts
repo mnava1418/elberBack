@@ -1,7 +1,8 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware'
-import paths from '../config/paths';
+import config from '../config';
 
+const paths = config.paths
 const router = Router();
 
 router.get('/', (req: Request, res: Response, next: NextFunction) => {
