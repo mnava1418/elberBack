@@ -8,13 +8,17 @@ import indexRouter from './routes/index';
 
 const app = express();
 
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'jade')
+app.use(logger('dev'))
+
 //DOS Attacks parameters
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 1000 // limit each IP to 1000 requests per windowMs
   });
 
-  app.use(limiter)
+app.use(limiter)
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

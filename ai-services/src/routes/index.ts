@@ -4,7 +4,7 @@ import chatRoutes from './chatRoutes'
 const router = Router();
 
 router.get('/', (req: Request, res: Response, next: NextFunction) => {
-  res.send('Hello, world!');
+  res.render('index', { title: 'Elber AI Services' });
 });
 
 router.use('/chat', chatRoutes)
