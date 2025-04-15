@@ -10,3 +10,7 @@ export const aws = {
     access_key: process.env.AWS_ACCESS_KEY_ID,
     secret_key: process.env.AWS_SECRET_ACCESS_KEY
 }
+
+export const gateway = {
+    secret: process.env.GATEWAY_SECRET
+}
