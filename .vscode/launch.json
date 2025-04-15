@@ -28,6 +28,13 @@
             "request": "launch",
             "command": "npm run start",
             "cwd": "${workspaceFolder}/ai-services"
+        },
+        {
+            "type": "node-terminal",
+            "name": "Run API Gateway",
+            "request": "launch",
+            "command": "npm run start",
+            "cwd": "${workspaceFolder}/api-gateway"
         }
     ]
 }
