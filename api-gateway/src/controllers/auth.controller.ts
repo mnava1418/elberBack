@@ -21,7 +21,8 @@ const validateToken = (req: AuthenticationRequest, res: Response, next: NextFunc
             res.status(401).json({error: 'Unauthorized user.'})
         })
     } catch (error) {
-        res.status(401).json({error: 'Unauthorized user.'})
+        console.error(error)
+        res.status(500).json({error: 'Internal Error Server.'})
     }
 }
 
