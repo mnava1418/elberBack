@@ -7,6 +7,6 @@ module.exports = {
     },
 
     urls: {
-        authService: process.env.URL_AUTH_SEVICE
+        authService: process.env.BACK_URL
     }
 }
