@@ -20,4 +20,13 @@ router.use('/ai', authController.validateToken, createProxyMiddleware({
   }  
 }))
 
+router.use('/auth', createProxyMiddleware({
+  target: paths.auth_services,
+  changeOrigin: true,
+  pathRewrite: { '/auth':'/' },
+  on: {
+    proxyReq: proxyConroller.proxy_request
+  }
+}))
+
 export default router;

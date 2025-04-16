@@ -7,5 +7,8 @@ module.exports = {
     },
     firebase: {
         cred: process.env.GOOGLE_APPLICATION_CREDENTIALS
+    },
+    gateway: {
+        secret: process.env.GATEWAY_SECRET
     }
 }
