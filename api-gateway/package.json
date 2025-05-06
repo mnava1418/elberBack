@@ -15,7 +15,8 @@
     "http-errors": "~1.6.3",
     "http-proxy-middleware": "^3.0.5",
     "jade": "~1.11.0",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "common-services": "file:../common-services"
   },
   "main": "src/app.js",
   "keywords": [],
