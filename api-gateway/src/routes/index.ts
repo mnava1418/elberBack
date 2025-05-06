@@ -20,6 +20,15 @@ router.use('/ai', authController.validateToken, createProxyMiddleware({
   }  
 }))
 
+router.use('/weather', authController.validateToken, createProxyMiddleware({
+  target: paths.weather_services,
+  changeOrigin: true,
+  pathRewrite: { '/weather': '/'},
+  on: {
+    proxyReq: proxyConroller.proxy_request
+  }  
+}))
+
 router.use('/auth', createProxyMiddleware({
   target: paths.auth_services,
   changeOrigin: true,
