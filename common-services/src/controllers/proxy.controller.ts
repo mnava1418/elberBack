@@ -1,5 +1,5 @@
 import { ClientRequest } from "http"
-import { AuthenticationRequest } from "../interfaces"
+import { AuthenticationRequest } from "../interfaces/http.interface"
 import { Response } from "express"
 import { gateway } from "../config/auth"
 
