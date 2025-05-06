@@ -1,7 +1,8 @@
 import {Response} from 'express'
 import * as chatService from '../services/chatService'
 import { ChatResponse } from '../interfaces/chatInterface';
-import { AuthenticationRequest, CustomHttpHeaders } from '../interfaces/httpInterface';
+import { AuthenticationRequest } from '../interfaces/httpInterface';
+import { CustomHttpHeaders } from 'common-services/src/interfaces/http.interface'
 
 export const getMessages = async (req: AuthenticationRequest, res: Response) => {
     try {

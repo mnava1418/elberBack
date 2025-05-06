@@ -1,8 +1,8 @@
-import {NextFunction, Response, Request} from 'express'
-import { CustomHttpHeaders } from '../interfaces/httpInterface'
+import express from 'express'
+import { CustomHttpHeaders } from '../interfaces/http.interface'
 import { gateway } from '../config/auth'
-
-const validateGateway = (req: Request, res: Response, next: NextFunction) => {
+ 
+ export const validateGateway = (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         const headers = req.headers as CustomHttpHeaders
 
@@ -16,9 +16,3 @@ const validateGateway = (req: Request, res: Response, next: NextFunction) => {
         res.status(500).json({error: 'Internal Error Server.'})
     }
 }
-
-const authController = {
-    validateGateway
-}
-
-export default authController
