@@ -1,6 +1,4 @@
-import dotenv from 'dotenv'
-dotenv.config()
+import * as dotenv from 'dotenv'
+import { resolve } from 'path'
 
-export const gateway = {
-    secret: process.env.GATEWAY_SECRET
-}
+dotenv.config({path: resolve(__dirname, '../../.env')})
