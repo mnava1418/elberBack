@@ -35,6 +35,13 @@
             "request": "launch",
             "command": "npm run start",
             "cwd": "${workspaceFolder}/api-gateway"
+        },
+        {
+            "type": "node-terminal",
+            "name": "Run Weather Services",
+            "request": "launch",
+            "command": "npm run start",
+            "cwd": "${workspaceFolder}/weather-services"
         }
     ]
 }
