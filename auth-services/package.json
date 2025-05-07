@@ -9,6 +9,7 @@
   "author": "Martin Nava",
   "license": "ISC",
   "dependencies": {
+    "common-services": "file:../common-services",
     "cookie-parser": "^1.4.6",
     "debug": "^4.3.4",
     "dotenv": "^16.4.5",

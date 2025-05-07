@@ -1,5 +1,4 @@
 const tokenService = require('../services/tokenService')
-const { gateway } = require('../config/auth')
 
 const validateTokenQuery = (req, res, next) => {
     let token = req.query.token
@@ -42,24 +41,8 @@ const isAdminToken = (req, res, next) => {
     }
 }
 
-const validateGateway = (req, res, next) => {
-    try {
-        const headers = req.headers
-
-        if(headers['x-api-gateway-secret'] === gateway.secret) {
-            next()
-        } else {
-            res.status(403).json({error: 'Invalid Call.'})
-        }        
-    } catch (error) {
-        console.error(error)
-        res.status(500).json({error: 'Internal Error Server.'})
-    }
-}
-
 module.exports = {
     validateTokenQuery,
     validateTokenHeader,
     isAdminToken,
-    validateGateway, 
 }
