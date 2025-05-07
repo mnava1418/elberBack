@@ -1,6 +1,6 @@
 import { NextFunction, Response } from 'express'
 import admin from 'firebase-admin'
-import { AuthenticationRequest } from '../interfaces'
+import { AuthenticationRequest } from 'common-services/src/interfaces/http.interface'
 
 const validateToken = (req: AuthenticationRequest, res: Response, next: NextFunction): void => {
     try {
