@@ -30,6 +30,30 @@ services:
       - zookeeper
     networks:
       - default
+  ai-services:
+    build:
+      context: .
+      dockerfile: ai-services/Dockerfile 
+    ports:
+      - "4042:4042"
+    environment:
+      - TEST=TEST
+    networks:
+      - default      
+  api-gateway:
+    build:
+      context: .
+      dockerfile: api-gateway/Dockerfile 
+    ports:
+      - "4040:4040"
+    environment:
+      - TEST=TEST
+    depends_on:
+      - ai-services
+      - auth-services
+      - weather-services
+    networks:
+      - default      
   auth-services:
     build:
       context: .
@@ -42,16 +66,6 @@ services:
       - kafka
     networks:
       - default  
-  ai-services:
-    build:
-      context: .
-      dockerfile: ai-services/Dockerfile 
-    ports:
-      - "4042:4042"
-    environment:
-      - TEST=TEST
-    networks:
-      - default      
   email-services:
     build:
       context: .
@@ -62,6 +76,16 @@ services:
       - kafka
     networks:
       - default  
+  weather-services:
+    build:
+      context: .
+      dockerfile: weather-services/Dockerfile 
+    ports:
+      - "4043:4043"
+    environment:
+      - TEST=TEST
+    networks:
+      - default      
 volumes:
   kafka-volume:
   zookeeper-volume:
