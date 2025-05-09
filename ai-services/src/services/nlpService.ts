@@ -1,10 +1,12 @@
 import { PollyClient, SynthesizeSpeechCommand } from '@aws-sdk/client-polly'
 import { Socket, DefaultEventsMap } from 'socket.io'
 import { ChatMessage } from "../interfaces/chatInterface"
-import { IntentCategory, NLPResponse } from "../interfaces/nlpInterface"
+import { GeneralPayload, IntentCategory, IntentName, NLPActions, NLPResponse } from "../interfaces/nlpInterface"
 import { saveChatMessages } from "./chatService"
 import * as dialogflow from './dialogFlowService'
 import { aws } from '../config/auth'
+import mcpHandleRequest from './mcpService'
+import { MCPAction } from '../interfaces/mcpInterface'
 
 const pollyClient = new PollyClient({
     region: 'us-east-1',
@@ -23,20 +25,34 @@ const normalizeText = (text: string): string => {
         .trim()
 }
 
-export const generateResponse = async (text: string): Promise<NLPResponse> => {
+export const generateResponse = async (text: string, type: 'voice' | 'text'): Promise<NLPResponse> => {
     try {
         const normalizedText = normalizeText(text)
         const intentInfo =  await dialogflow.detectIntent(normalizedText, 'es')
         const intentCategory: IntentCategory = intentInfo.intentName.split('_')[1] as IntentCategory
+
+        let mcpAction: MCPAction
         
         switch (intentCategory) {
-            case 'general':
-                return {text: intentInfo.responseText}
+            case IntentCategory.GENERAL:
+                mcpAction = {category: intentCategory, intent: IntentName.ELBER_GENERAL_FALLBACK, 
+                    params: {responseText: intentInfo.responseText, type}
+                }
+                break;
             default:
                 throw new Error('Unknown category.')
         }
+
+        const mcpResponse = mcpHandleRequest(mcpAction)
+        return mcpResponse
     } catch (error) {
-        return{text: '¡Changos! Algo no jaló… fue culpa del becario imaginario, lo juro.'}
+        const payload: GeneralPayload = {text: '¡Changos! Algo no jaló… fue culpa del becario imaginario, lo juro.'}
+        const response: NLPResponse = {
+            action: type == 'text' ? NLPActions.SHOW_TEXT : NLPActions.PLAY_AUDIO,
+            payload
+        }
+        
+        return response
     }
 }
 
@@ -102,4 +118,3 @@ export const textToAudio = async (socket: Socket<DefaultEventsMap, DefaultEvents
         socket.emit('audio-error-elber')
     }
 }
-
