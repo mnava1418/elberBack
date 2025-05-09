@@ -27,7 +27,7 @@ export const detectIntent =  async  (query: string, languageCode: string, sessio
         const responses = await sessionClient.detectIntent(request);
         const result = responses[0].queryResult;
         const responseText = result?.fulfillmentText ? result.fulfillmentText : ''
-        const intentName: IntentName = result?.intent?.displayName ? result.intent.displayName as IntentName : 'elber_general_fallback'
+        const intentName: IntentName = result?.intent?.displayName ? result.intent.displayName as IntentName : IntentName.ELBER_GENERAL_FALLBACK
         return {intentName, responseText}
     } catch (error) {
         console.error(error)
