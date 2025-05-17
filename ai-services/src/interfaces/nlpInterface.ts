@@ -26,11 +26,12 @@ export type KeywordRule = {
 
 export enum NLPActions {
     SHOW_TEXT = 'show_text',
-    PLAY_AUDIO = 'play_audion'
+    PLAY_AUDIO = 'play_audio'
 }
 
 export type GeneralPayload = {
     text: string
+    errorKey?: 'responseError' | 'voiceError' | 'connectionError'
 }
 
 export type NLPResponse = {
