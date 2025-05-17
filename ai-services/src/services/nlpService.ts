@@ -46,7 +46,7 @@ export const generateResponse = async (text: string, type: 'voice' | 'text'): Pr
         const mcpResponse = mcpHandleRequest(mcpAction)
         return mcpResponse
     } catch (error) {
-        const payload: GeneralPayload = {text: '¡Changos! Algo no jaló… fue culpa del becario imaginario, lo juro.'}
+        const payload: GeneralPayload = {text: '¡Changos! Algo no jaló… fue culpa del becario imaginario, lo juro.', errorKey: 'responseError'}
         const response: NLPResponse = {
             action: type == 'text' ? NLPActions.SHOW_TEXT : NLPActions.PLAY_AUDIO,
             payload
@@ -79,10 +79,11 @@ export const saveMessages = (uid: string, userText: string, elberText: string) =
     })
 }
 
-export const textToAudio = async (socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>, text: string) => {
+export const textToAudio = async (socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>, nlpResponse: NLPResponse) => {
     try {
+        const payload: GeneralPayload = nlpResponse.payload
         const command = new SynthesizeSpeechCommand({
-            Text: text,
+            Text: payload.text,
             TextType: 'text',
             OutputFormat: 'mp3',
             VoiceId: 'Andres',
@@ -112,9 +113,8 @@ export const textToAudio = async (socket: Socket<DefaultEventsMap, DefaultEvents
             if (done) break
             socket.emit('audio-chunk-elber', value)
         }
-  
-        socket.emit('audio-end-elber', text)
     } catch (error) {
-        socket.emit('audio-error-elber')
+        console.error(error)
+        throw new  Error('Unable to generate audio.')
     }
 }
