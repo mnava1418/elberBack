@@ -2,7 +2,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware'
 import config from '../config';
 import authController from '../controllers/auth.controller';
-import { proxy } from 'common-services'
+import { proxy, gateway } from 'common-services'
 
 const paths = config.paths
 const router = Router();
@@ -18,6 +18,15 @@ router.use('/ai', authController.validateToken, createProxyMiddleware({
   on: {
     proxyReq: proxy.proxy_request
   }  
+}))
+
+router.use('/socket.io', authController.validateToken, createProxyMiddleware({
+  target: paths.ai_services,
+  changeOrigin: true,
+  ws: true,
+  headers: {
+    'x-api-gateway-secret': gateway.secret || ''
+  }
 }))
 
 router.use('/weather', authController.validateToken, createProxyMiddleware({
