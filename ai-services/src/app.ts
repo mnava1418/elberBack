@@ -3,6 +3,7 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import rateLimit from 'express-rate-limit';
+import { auth } from 'common-services'
 
 import indexRouter from './routes/index';
 
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(auth.validateGateway)
 app.use('/', indexRouter);
 
 export default app;

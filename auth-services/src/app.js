@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit')
+const { auth } = require('common-services')
 
 const indexRouter = require('./routes/index');
 
@@ -28,6 +29,8 @@ const setMiddlewares = () => {
 }
 
 const setRoutes = () => {
+  app.use(auth.validateGateway)
+
   app.use('/', indexRouter());
   
   // catch 404 and forward to error handler

@@ -1,50 +1,17 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { createProxyMiddleware } from 'http-proxy-middleware'
-import config from '../config';
 import authController from '../controllers/auth.controller';
-import { proxy, gateway } from 'common-services'
+import authRoutes from './auth.routes';
+import aiRoutes from './ai.routes';
+import socketRoutes from './socket.routes';
 
-const paths = config.paths
 const router = Router();
 
 router.get('/', (req: Request, res: Response, next: NextFunction) => {
   res.render('index', { title: 'Elber API Gateway' });
 });
 
-router.use('/ai', authController.validateToken, createProxyMiddleware({
-  target: paths.ai_services,
-  changeOrigin: true,
-  pathRewrite: { '/ai': '/'},
-  on: {
-    proxyReq: proxy.proxy_request
-  }  
-}))
-
-router.use('/socket.io', authController.validateToken, createProxyMiddleware({
-  target: paths.ai_services,
-  changeOrigin: true,
-  ws: true,
-  headers: {
-    'x-api-gateway-secret': gateway.secret || ''
-  }
-}))
-
-router.use('/weather', authController.validateToken, createProxyMiddleware({
-  target: paths.weather_services,
-  changeOrigin: true,
-  pathRewrite: { '/weather': '/'},
-  on: {
-    proxyReq: proxy.proxy_request
-  }  
-}))
-
-router.use('/auth', createProxyMiddleware({
-  target: paths.auth_services,
-  changeOrigin: true,
-  pathRewrite: { '/auth':'/' },
-  on: {
-    proxyReq: proxy.proxy_request
-  }
-}))
+router.use('/ai', authController.validateToken, aiRoutes())
+router.use('/socket.io', authController.validateToken, socketRoutes())
+router.use('/auth', authRoutes())
 
 export default router;
