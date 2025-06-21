@@ -16,3 +16,16 @@ import { gateway } from '../config/auth'
         res.status(500).json({error: 'Internal Error Server.'})
     }
 }
+
+export const validateGatewaySync = (headers: CustomHttpHeaders) => {
+    try {
+        if(headers['x-api-gateway-secret'] === gateway.secret) {
+            return true
+        } else {
+            return false
+        }     
+    } catch (error) {
+        console.error(error)
+        return false
+    }
+}

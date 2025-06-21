@@ -33,8 +33,10 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.auth = exports.proxy = void 0;
+exports.gateway = exports.auth = exports.proxy = void 0;
 const proxyControllers = __importStar(require("./controllers/proxy.controller"));
 const authControllers = __importStar(require("./controllers/auth.controller"));
+const authConfig = __importStar(require("./config/auth"));
 exports.proxy = proxyControllers;
 exports.auth = authControllers;
+exports.gateway = authConfig.gateway;
