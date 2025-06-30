@@ -3,11 +3,13 @@ export enum IntentName {
     ELBER_GENERAL_FALLBACK = 'elber_general_fallback',
     ELBER_GENERAL_NAME = 'elber_general_name',
     ELBER_GENERAL_MOTIVATION = 'elber_general_motivation',
-    ELBER_GENERAL_SKILLS = 'elber_general_skills'
+    ELBER_GENERAL_SKILLS = 'elber_general_skills',
+    ELBER_VISION_MAIN = 'elber_vision_main'
 }
 
 export enum IntentCategory {
-    GENERAL = 'general'
+    GENERAL = 'general',
+    VISION = 'vision'
 }
     
 export type NLPIntents = {
@@ -26,7 +28,8 @@ export type KeywordRule = {
 
 export enum NLPActions {
     SHOW_TEXT = 'show_text',
-    PLAY_AUDIO = 'play_audio'
+    PLAY_AUDIO = 'play_audio',
+    OPEN_CAMERA = 'open_camera',
 }
 
 export type GeneralPayload = {

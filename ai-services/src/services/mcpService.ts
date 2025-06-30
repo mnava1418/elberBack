@@ -6,6 +6,9 @@ import aiFunctionsMap from "./aiService";
 const actionsMap: Record<IntentCategory, Partial<Record<IntentName, (...args: any[]) => NLPResponse >>> = {
     general: {
         elber_general_fallback: aiFunctionsMap.generateTextResponse
+    },
+    vision: {
+        elber_vision_main: aiFunctionsMap.generateVisionResponse
     }
 }
 

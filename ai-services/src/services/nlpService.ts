@@ -31,13 +31,17 @@ export const generateResponse = async (text: string, type: 'voice' | 'text'): Pr
         const intentInfo =  await dialogflow.detectIntent(normalizedText, 'es')
         const intentCategory: IntentCategory = intentInfo.intentName.split('_')[1] as IntentCategory
 
-        let mcpAction: MCPAction
+        let mcpAction: MCPAction = {category: intentCategory, intent: intentInfo.intentName,
+            params: {type}
+        }
         
         switch (intentCategory) {
             case IntentCategory.GENERAL:
-                mcpAction = {category: intentCategory, intent: IntentName.ELBER_GENERAL_FALLBACK, 
-                    params: {responseText: intentInfo.responseText, type}
+                mcpAction = {...mcpAction, intent: IntentName.ELBER_GENERAL_FALLBACK,
+                    params: {...mcpAction.params, responseText: intentInfo.responseText}
                 }
+                break;
+            case IntentCategory.VISION:
                 break;
             default:
                 throw new Error('Unknown category.')
